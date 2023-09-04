@@ -25,18 +25,15 @@ Managing and tracking a daily routing along with monthly and weekly goals and mi
 
 ## Services
 
-Routine Schedule Service - generally handles data operations for routine schedules
-Goal Service - generally handles data operations for goals
-
+- Routine Schedule Service - generally handles data operations for routine schedules
+- Goal Service - generally handles data operations for goals
 
 ## Components
-Daily Routine
-Weekly Routine
-Annual Goals
-Monthly Goals
-Weekly Goals
-
-
+- Daily Routine
+- Weekly Routine
+- Annual Goals
+- Monthly Goals
+- Weekly Goals
 
 
 ## Development server
