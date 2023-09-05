@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FirebaseService } from '../services/firebase.service';
-
+import { User } from "firebase/auth";
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -9,26 +9,32 @@ import { FirebaseService } from '../services/firebase.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
   signedIn: boolean = false;
+  user: User = null;
 
   constructor(private firebaseService: FirebaseService) { }
 
-  signIn() {
-    console.log('HeaderComponent login');
-    this.firebaseService.signIn().then((userCredential) => {
-      this.signedIn = true;
+  ngOnInit(): void {
+    this.firebaseService.loggedInUser.subscribe((user) => {
+      if (user) {
+        this.user = user;
+        this.signedIn = true;
+      } else {
+        this.user = null;
+        this.signedIn = false;
+      }
     });
+  }
 
+  signIn() {
+    this.firebaseService.signIn();
   }
 
   signOut() {
-    console.log('HeaderComponent logout');
-    this.firebaseService.signOut().then(() => {
-      this.signedIn = false;
-    });
-
+    this.firebaseService.signOut();
   }
+
 
 }

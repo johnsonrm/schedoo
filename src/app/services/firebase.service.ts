@@ -5,22 +5,19 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { getAuth, signInWithPopup, GoogleAuthProvider, UserCredential } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, UserCredential, User } from "firebase/auth";
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class FirebaseService {
 
-  // private _app = null;
-  // private _analytics = null;
-
-  public loggedInUserEmail = "";
+  private loggedInUserSubject = new BehaviorSubject<User>(null);
+  public loggedInUser = this.loggedInUserSubject.asObservable();
 
   constructor() {
-    console.log('FirebaseService constructor');
 
     // Firebase web app configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
       apiKey: "AIzaSyC3R2K9r7aDJ31VBLksS3RFx1VvBPBaa40",
       authDomain: "monthly-1.firebaseapp.com",
@@ -33,30 +30,47 @@ export class FirebaseService {
 
     // Initialize Firebase
     try {
-      initializeApp(firebaseConfig);
+      const app = initializeApp(firebaseConfig);
       // this._analytics = getAnalytics(this._app);
+
     } catch(err) {
       throw new Error('Firebase initialization error');
     }
 
+    //handle authentification state changes
+    const auth = getAuth();
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log('FirebaseService login - user logged in');
+        this.loggedInUserSubject.next(user);
+      } else {
+        console.log('FirebaseService login - user logged out');
+        this.loggedInUserSubject.next(null);
+      }
+    });
+
+
   }
 
-  signIn(): Promise<UserCredential> {
+  signIn() {
 
     console.log('FirebaseService login');
 
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
 
-    return signInWithPopup(auth, provider);
-
+    signInWithPopup(auth, provider).catch((error) => {
+      throw new Error('Firebase login error');
+    });
   }
 
-  signOut(): Promise<void> {
+  signOut() {
 
     console.log('FirebaseService logout');
     const auth = getAuth();
-    return auth.signOut();
+    auth.signOut().catch((error) => {
+      throw new Error('Firebase logout error');
+    });
 
   }
 
