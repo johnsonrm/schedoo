@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
-
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAnalytics, Analytics } from "firebase/analytics";
 import { getAuth, signInWithPopup, GoogleAuthProvider, UserCredential, User } from "firebase/auth";
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs, Firestore } from 'firebase/firestore/lite';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class FirebaseService {
 
+  /*
+  Handles Firebase authentication and database access
+  */
+
   private loggedInUserSubject = new BehaviorSubject<User>(null);
   public loggedInUser = this.loggedInUserSubject.asObservable();
+
+  public analytics: Analytics = null;
+  public db: Firestore = null;
 
   constructor() {
 
@@ -31,7 +34,10 @@ export class FirebaseService {
     // Initialize Firebase
     try {
       const app = initializeApp(firebaseConfig);
-      // this._analytics = getAnalytics(this._app);
+      this.analytics = getAnalytics(app);
+      // Initialize Cloud Firestore and get a reference to the service
+      this.db = getFirestore(app);
+
 
     } catch(err) {
       throw new Error('Firebase initialization error');
@@ -52,16 +58,21 @@ export class FirebaseService {
 
   }
 
-  signIn() {
+  async signIn() {
 
     console.log('FirebaseService login');
 
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
 
-    signInWithPopup(auth, provider).catch((error) => {
+    await signInWithPopup(auth, provider).catch((error) => {
       throw new Error('Firebase login error');
     });
+
+
+
+
+
   }
 
   signOut() {

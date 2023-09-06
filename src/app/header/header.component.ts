@@ -36,5 +36,4 @@ export class HeaderComponent implements OnInit {
     this.firebaseService.signOut();
   }
 
-
 }

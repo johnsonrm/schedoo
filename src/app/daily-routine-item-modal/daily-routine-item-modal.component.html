@@ -1,0 +1,35 @@
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <form #routineItemForm="ngForm" (ngSubmit)="onSubmit(routineItemForm)">
+      <div class="mb-3">
+        <label for="time" class="form-label text-light" >Time of day</label>
+        <input type="time" id="time" class="form-control" data-bs-theme="dark" ngModel name="time" required>
+      </div>
+      <div class="mb-3">
+        <label for="Duration" class="form-label text-light">Duration</label>
+        <input type="number" id="duration" class="form-control" ngModel name="duration" [incremental]="15" required>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label text-light">Description</label>
+        <input type="text" id="description" class="form-control" ngModel name="description" required maxlength="50">
+      </div>
+      <!-- <div class="mb-3">
+        <button class="btn btn-primary btn-dark" type="submit" [disabled]="!routineItemForm.valid" >Add</button>
+      </div> -->
+    </form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-light" (click)="modal.save(routineItemForm)">Save</button>
+	</div>
+</ng-template>
+
+<button class="btn btn-outline-primary" (click)="open(content)">New</button>
+
+<hr />
+
+<pre>{{ closeResult }}</pre>
+

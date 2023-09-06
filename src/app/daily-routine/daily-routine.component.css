@@ -1,0 +1,45 @@
+table {
+  background-color: rgb(24, 24, 24);
+}
+
+.table-sm>:not(caption)>*>* {
+  padding: 0rem;
+}
+
+.table-hover tbody tr:hover {
+  --bs-table-accent-bg: #151515;
+}
+
+.routineThr {
+  padding-top: 2rem;
+
+}
+
+.routineThr th {
+  color: rgb(231, 161, 10);
+
+}
+
+
+.routineTr td {
+  color: gray;
+}
+
+h1 {
+  color: rgb(231, 161, 10);
+}
+
+/* p {
+  color: white
+} */
+
+/* .form-label {
+  color: white;
+} */
+
+.form-control {
+  background-color: #303030;
+  color: white;
+}
+
+

@@ -1,34 +1,68 @@
-
-
-require('dotenv').config({path: 'src/environments/.env'});
-
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_APIKEY,
-  authDomain: process.env.FIREBASE_AUTHDOMAIN,
-  projectId: process.env.FIREBASE_PROJECTID,
-  storageBucket: process.env.FIREBASE_STORAGEBUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGINGSENDERID,
-  appId: process.env.FIREBASE_APPID,
-  measurementId: process.env.FIREBASE_MEASUREMENTID //optional after firebase 7.20.0
-};
-
-
-
+import { Injectable } from "@angular/core";
+import { collection, addDoc, getDocs } from "firebase/firestore/lite";
+import { DailyRoutineItem } from "../models/daily.routine.item.model";
+import { FirebaseService } from "./firebase.service";
+import { BehaviorSubject } from "rxjs";
+@Injectable({providedIn: 'root'})
 export class RoutineScheduleService {
 
-  constructor() {
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
+  private dailyRoutineItemsSubject = new BehaviorSubject<DailyRoutineItem[]>(null);
+  public dailyRoutineItems = this.dailyRoutineItemsSubject.asObservable();
+
+  constructor(private firebaseService: FirebaseService) {
+
+    // get daily routine items from firebase
+    this.getDailyRoutineItems();
+
    }
 
+   async getDailyRoutineItems() {
 
+    console.log("getDailyRoutineItems()");
+
+    const db = this.firebaseService.db;
+    const dailyRoutineItemsCollection = collection(db, "daily-routine-items");
+
+    const items: DailyRoutineItem[] = [];
+    const querySnapshot = await getDocs(dailyRoutineItemsCollection)
+
+    querySnapshot.forEach(doc => {
+      const dailyRoutineItem = doc.data();
+      items.push({id: dailyRoutineItem.id, time: dailyRoutineItem.time, duration: dailyRoutineItem.duration, description: dailyRoutineItem.description});
+    });
+
+    this.dailyRoutineItemsSubject.next(items);
+
+  }
+
+   async addItem(item: DailyRoutineItem) {
+
+    try {
+      const db = this.firebaseService.db;
+      const docRef = await addDoc(collection(db, "daily-routine-items"), {
+        time: item.time,
+        duration: item.duration,
+        description: item.description
+      });
+
+      // const updatedItems = [...this.dailyRoutineItemsSubject.value, {
+      //   id: docRef.id,
+      //   time: item.time,
+      //   duration: item.duration,
+      //   description: item.description,
+      // }];
+
+      const updatedItems = [...this.dailyRoutineItemsSubject.value];
+
+      console.log(updatedItems);
+      this.dailyRoutineItemsSubject.next(updatedItems);
+
+    } catch (err) {
+      console.error("Error adding document: ", err);
+      throw err;
+    }
+
+   }
 
 }
+
