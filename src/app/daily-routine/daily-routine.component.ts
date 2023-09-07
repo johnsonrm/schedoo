@@ -4,11 +4,13 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { DailyRoutineItem } from '../models/daily.routine.item.model'; //model for daily routine item
 import { RoutineScheduleService } from '../services/routine-schedule.service'; //service for daily routine item
 import { DailyRoutineItemModalComponent } from '../daily-routine-item-modal/daily-routine-item-modal.component';
-
+import { TimeCellComponent } from './time-cell.component';
+import { DurationCellComponent } from './duration-cell.component';
+import { DescriptionCellComponent } from './description-cell.component';
 @Component({
   selector: 'app-daily-routine',
   standalone: true,
-  imports: [CommonModule, FormsModule, DailyRoutineItemModalComponent],
+  imports: [CommonModule, FormsModule, DailyRoutineItemModalComponent, TimeCellComponent, DurationCellComponent, DescriptionCellComponent],
   templateUrl: './daily-routine.component.html',
   styleUrls: ['./daily-routine.component.css']
 })
@@ -24,22 +26,47 @@ export class DailyRoutineComponent {
 
    }
 
-  // async onSubmit(form: NgForm) {
+  async onSaveItem(item: any) {
 
-  //   const time: Time = form.value.time;
-  //   const duration: number = form.value.duration;
-  //   const description: string = form.value.description;
+    try {
 
-  //   const dailyRoutineItem: DailyRoutineItem = new DailyRoutineItem(time, duration, description);
+      // Ensure item has an itemId
+      if (!item.itemId) {
+        throw new Error("Item must have an id to be updated.");
+      }
 
-  //   const newRoutineItem = await this.dailyRoutineService.addItem(dailyRoutineItem);
+      const currentDailyRoutineItem = this.dailyRoutineItems.find((i: DailyRoutineItem) => i.id === item.itemId);
 
-  //   this.dailyRoutineItems.push(dailyRoutineItem);
+      if (!currentDailyRoutineItem) {
+        throw new Error("Item not found for id: " + item.itemId);
+      }
 
-  // }
+      const dailyRoutineItem: DailyRoutineItem = {
+        id: currentDailyRoutineItem.id,
+        time: item.itemTime || currentDailyRoutineItem.time,
+        duration: item.itemDuration || currentDailyRoutineItem.duration,
+        description: item.itemDescription || currentDailyRoutineItem.description
+      };
 
-  onDelete(index: number) {
-    this.dailyRoutineItems.splice(index, 1);
+      await this.dailyRoutineService.updateItem(dailyRoutineItem.id, dailyRoutineItem);
+
+    } catch (error) {
+      console.error("Error saving item: ", error);
+    }
+  }
+
+  onDeleteItem(itemId: string) {
+
+    // TODO: prompt user to confirm delete
+
+    try {
+
+      this.dailyRoutineService.deleteItem(itemId);
+
+    } catch (error) {
+      console.error("Error deleting item: ", error);
+    }
+
   }
 
 

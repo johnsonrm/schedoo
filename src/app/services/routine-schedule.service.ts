@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
-import { collection, addDoc, getDocs } from "firebase/firestore/lite";
+import { CommonModule, Time } from '@angular/common';
 import { DailyRoutineItem } from "../models/daily.routine.item.model";
 import { FirebaseService } from "./firebase.service";
+import { collection, doc, getDocs, addDoc, query, orderBy, limit, where, updateDoc, deleteDoc  } from 'firebase/firestore/lite';
 import { BehaviorSubject } from "rxjs";
 @Injectable({providedIn: 'root'})
 export class RoutineScheduleService {
@@ -18,17 +19,15 @@ export class RoutineScheduleService {
 
    async getDailyRoutineItems() {
 
-    console.log("getDailyRoutineItems()");
-
     const db = this.firebaseService.db;
     const dailyRoutineItemsCollection = collection(db, "daily-routine-items");
-
     const items: DailyRoutineItem[] = [];
-    const querySnapshot = await getDocs(dailyRoutineItemsCollection)
+    const q = query(dailyRoutineItemsCollection, orderBy("time"), limit(50));
+    const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach(doc => {
       const dailyRoutineItem = doc.data();
-      items.push({id: dailyRoutineItem.id, time: dailyRoutineItem.time, duration: dailyRoutineItem.duration, description: dailyRoutineItem.description});
+      items.push({id: doc.id, time: dailyRoutineItem.time, duration: dailyRoutineItem.duration, description: dailyRoutineItem.description});
     });
 
     this.dailyRoutineItemsSubject.next(items);
@@ -63,6 +62,58 @@ export class RoutineScheduleService {
     }
 
    }
+
+   async updateItem(itemId: string, updatedItem: DailyRoutineItem) {
+
+    try {
+      const db = this.firebaseService.db;
+      const docRef = doc(db, "daily-routine-items", itemId);
+
+      await updateDoc(docRef, {
+        time: updatedItem.time,
+        duration: updatedItem.duration,
+        description: updatedItem.description
+      });
+
+      const updatedItems = this.dailyRoutineItemsSubject.value.map(item => {
+        if (item.id === itemId) {
+          return {
+            ...item,
+            time: updatedItem.time,
+            duration: updatedItem.duration,
+            description: updatedItem.description
+          };
+        } else {
+          return item;
+        }
+      });
+
+      console.log(updatedItems);
+      this.dailyRoutineItemsSubject.next(updatedItems);
+
+    } catch (err) {
+      console.error("Error updating document: ", err);
+      throw err;
+    }
+  }
+
+  deleteItem(itemId: string) {
+
+    try {
+
+      const docRef = doc(this.firebaseService.db, "daily-routine-items", itemId);
+
+      deleteDoc(docRef).then(() => {
+        const updatedItems = this.dailyRoutineItemsSubject.value.filter(item => item.id !== itemId);
+        this.dailyRoutineItemsSubject.next(updatedItems);
+      });
+
+    } catch (err) {
+      console.error("Error deleting document: ", err);
+      throw err;
+    }
+  }
+
 
 }
 

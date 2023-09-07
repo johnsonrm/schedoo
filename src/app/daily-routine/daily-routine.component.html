@@ -5,62 +5,35 @@
 
     <app-daily-routine-item-modal></app-daily-routine-item-modal>
 
-<!--
-    <div class="col-xs-12 col-md-4">
-      <form #routineItemForm="ngForm" (ngSubmit)="onSubmit(routineItemForm)">
-        <div class="mb-3">
-          <label for="time" class="form-label text-light" >Time of day</label>
-          <input type="time" id="time" class="form-control" data-bs-theme="dark" ngModel name="time" required>
-        </div>
-        <div class="mb-3">
-          <label for="Duration" class="form-label text-light">Duration</label>
-          <input type="number" id="duration" class="form-control" ngModel name="duration" [incremental]="15" required>
-        </div>
-        <div class="mb-3">
-          <label for="description" class="form-label text-light">Description</label>
-          <input type="text" id="description" class="form-control" ngModel name="description" required maxlength="50">
-        </div>
-        <div class="mb-3">
-          <button class="btn btn-primary btn-dark" type="submit" [disabled]="!routineItemForm.valid" >Add</button>
-        </div>
-      </form>
-    </div> -->
-
-
-
     <div class="col-xs-12 col-md-9">
-        <!-- <div class="mb-6" *ngFor="let dailyRoutineItem of dailyRoutineItems">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">{{dailyRoutineItem.time}}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{dailyRoutineItem.duration}}</h6>
-              <p class="card-text">{{dailyRoutineItem.description}}</p>
-              <button class="btn btn-danger" (click)="onDelete(dailyRoutineItem)">Delete</button>
-            </div>
-          </div> -->
-
           <table class="table table-dark table-sm table-striped table-bordered table-hover">
             <thead>
               <tr class="routineThr">
                 <th>Time</th>
-                <th>Duration</th>
+                <th>Duration (minutes)</th>
                 <th>Description</th>
-                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="routineTr" *ngFor="let dailyRoutineItem of dailyRoutineItems">
-                <td>{{ dailyRoutineItem.time }}</td>
-                <td>{{ dailyRoutineItem.duration }}</td>
-                <td>{{ dailyRoutineItem.description }}</td>
-                <td>
-                  <button type="button" class="btn btn-link">Edit</button>
-                  <button type="button" class="btn btn-link btn-sm">Remove from trade</button>
-                </td></tr>
-              </tbody>
-            </table>
+              <ng-container *ngFor="let dailyRoutineItem of dailyRoutineItems" >
+                <tr class="routineTr" *ngIf="dailyRoutineItem.id !== edit">
+                  <td class="timeCell">
+                    <app-time-cell [itemId]="dailyRoutineItem.id" [value]="dailyRoutineItem.time" (save)="onSaveItem($event)" ></app-time-cell>
+                  </td>
+                  <td class="durationCell">
+                    <app-duration-cell [itemId]="dailyRoutineItem.id" [value]="dailyRoutineItem.duration" (save)="onSaveItem($event)" ></app-duration-cell>
+                  </td>
+                  <td class="descriptionCell">
+                    <div class="inline">
+                      <app-description-cell [itemId]="dailyRoutineItem.id" [value]="dailyRoutineItem.description" (save)="onSaveItem($event)" #description></app-description-cell>
+                      <button class="btn btn-link btn-sm deleteButton" *ngIf="!description.editing" (click)="onDeleteItem(dailyRoutineItem.id)">Delete</button>
+                    </div>
 
-        <!-- </div> -->
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
       </div>
   </div>
 </div>

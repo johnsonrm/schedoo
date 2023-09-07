@@ -3,7 +3,7 @@ table {
 }
 
 .table-sm>:not(caption)>*>* {
-  padding: 0rem;
+  padding-left: 0.2rem;
 }
 
 .table-hover tbody tr:hover {
@@ -16,30 +16,55 @@ table {
 }
 
 .routineThr th {
-  color: rgb(231, 161, 10);
-
+  color: #aaaaaa;
 }
-
 
 .routineTr td {
   color: gray;
 }
 
 h1 {
-  color: rgb(231, 161, 10);
+  color: rgb(177, 124, 9);
 }
-
-/* p {
-  color: white
-} */
-
-/* .form-label {
-  color: white;
-} */
 
 .form-control {
   background-color: #303030;
   color: white;
 }
 
+.inline {
+  display: inline;
+}
 
+.deleteButton {
+  color: rgb(98, 97, 102);
+}
+
+.deleteButton:hover {
+  color: #0d6efd;
+}
+
+button {
+  color: #0d6efd;
+}
+
+.durationCell {
+  max-width: 2rem;
+  /* min-width: 100px; */
+  /* padding-left: 0.2rem; */
+}
+
+.durationInput {
+  max-width: 5rem;
+}
+
+.timeCell {
+  min-width: 70px;
+  /* text-align: center; */
+  /* padding-left: 0.2rem; */
+}
+
+.descriptionCell {
+  max-width: 20rem;
+  /* text-align: left; */
+}

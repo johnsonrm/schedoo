@@ -13,20 +13,16 @@ import { RoutineScheduleService } from '../services/routine-schedule.service'; /
   styleUrls: ['./daily-routine-item-modal.component.css']
 })
 export class DailyRoutineItemModalComponent {
+
 	closeResult = '';
 
 	constructor(private modalService: NgbModal, private dailyRoutineService: RoutineScheduleService) {}
 
 	open(content) {
-		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
-			(result) => {
-				this.closeResult = `Closed with: ${result}`;
-			},
-			(reason) => {
-				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-			},
-		);
-	}
+
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+
+  }
 
   async save(form: NgForm) {
 
@@ -36,19 +32,10 @@ export class DailyRoutineItemModalComponent {
 
     const dailyRoutineItem: DailyRoutineItem = new DailyRoutineItem(time, duration, description);
 
-    const newRoutineItem = await this.dailyRoutineService.addItem(dailyRoutineItem);
+    this.dailyRoutineService.addItem(dailyRoutineItem);
 
-    // this.dailyRoutineItems.push(dailyRoutineItem);
+    this.modalService.dismissAll();
 
   }
 
-	private getDismissReason(reason: any): string {
-		if (reason === ModalDismissReasons.ESC) {
-			return 'by pressing ESC';
-		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-			return 'by clicking on a backdrop';
-		} else {
-			return `with: ${reason}`;
-		}
-	}
 }
