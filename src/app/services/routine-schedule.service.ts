@@ -44,16 +44,8 @@ export class RoutineScheduleService {
         description: item.description
       });
 
-      // const updatedItems = [...this.dailyRoutineItemsSubject.value, {
-      //   id: docRef.id,
-      //   time: item.time,
-      //   duration: item.duration,
-      //   description: item.description,
-      // }];
-
       const updatedItems = [...this.dailyRoutineItemsSubject.value];
 
-      console.log(updatedItems);
       this.dailyRoutineItemsSubject.next(updatedItems);
 
     } catch (err) {

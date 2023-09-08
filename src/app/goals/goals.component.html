@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h1>Goals</h1>
+    <p class="text-light">Here you can add and manage your goals</p>
+
+    <app-new-goal-modal></app-new-goal-modal>
+
+    <div class="col-xs-12 col-md-9">
+          <table class="table table-dark table-sm table-striped table-bordered table-hover">
+            <thead>
+              <tr class="routineThr">
+                <th>Goal</th>
+                <th>Period</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let goalItem of goalItems" >
+                <tr class="routineTr" *ngIf="goalItem.id !== edit">
+                  <td class="descriptionCell">
+                    <app-text-cell [itemId]="goalItem.id" [value]="goalItem.goalName" (save)="onSaveItem($event)" ></app-text-cell>
+                  </td>
+                  <td class="descriptionCell">
+                    <app-goal-period-selector [itemId]="goalItem.id" [selectedPeriod]="goalItem.period" (save)="onSaveItem($event)"></app-goal-period-selector>
+                    <!-- <app-text-cell [itemId]="goalItem.id" [value]="goalItem.period" (save)="onSaveItem($event)" ></app-text-cell>
+                    <select id="period" name="period" class="form-control" [(ngModel)]="selectedPeriod" required>
+                      <option value="0">Daily</option>
+                      <option value="1">Weekly</option>
+                      <option value="2">Monthly</option>
+                      <option value="3">Yearly</option>
+                      <option value="4">Lifetime</option>
+                    </select> -->
+                  </td>
+                  <td class="descriptionCell">
+                    <div class="inline">
+                      <app-text-cell [itemId]="goalItem.id" [value]="goalItem.description" (save)="onSaveItem($event)" #description></app-text-cell>
+                      <button class="btn btn-link btn-sm deleteButton" *ngIf="!description.editing" (click)="onDeleteItem(goalItem.id)">Delete</button>
+                    </div>
+
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+      </div>
+  </div>
+</div>

@@ -2,15 +2,14 @@ import { Component } from '@angular/core';
 import { CommonModule, Time } from '@angular/common';
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, NgForm } from '@angular/forms';
-import { DailyRoutineItem } from '../models/daily.routine.item.model'; //model for daily routine item
-import { RoutineScheduleService } from '../services/routine-schedule.service'; //service for daily routine item
+import { DailyRoutineItem } from '../../models/daily.routine.item.model'; //model for daily routine item
+import { RoutineScheduleService } from '../../services/routine-schedule.service'; //service for daily routine item
 
 @Component({
   selector: 'app-daily-routine-item-modal',
   standalone: true,
   imports: [CommonModule, NgbDatepickerModule, FormsModule],
   templateUrl: './daily-routine-item-modal.component.html',
-  styleUrls: ['./daily-routine-item-modal.component.css']
 })
 export class DailyRoutineItemModalComponent {
 

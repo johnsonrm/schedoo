@@ -3,7 +3,7 @@ import { CommonModule, Time } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { DailyRoutineItem } from '../models/daily.routine.item.model'; //model for daily routine item
 import { RoutineScheduleService } from '../services/routine-schedule.service'; //service for daily routine item
-import { DailyRoutineItemModalComponent } from '../daily-routine-item-modal/daily-routine-item-modal.component';
+import { DailyRoutineItemModalComponent } from './daily-routine-item-modal/daily-routine-item-modal.component';
 import { TimeCellComponent } from './time-cell.component';
 import { DurationCellComponent } from './duration-cell.component';
 import { DescriptionCellComponent } from './description-cell.component';
