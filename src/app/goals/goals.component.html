@@ -6,42 +6,40 @@
     <app-new-goal-modal></app-new-goal-modal>
 
     <div class="col-xs-12 col-md-9">
-          <table class="table table-dark table-sm table-striped table-bordered table-hover">
-            <thead>
-              <tr class="routineThr">
-                <th>Goal</th>
-                <th>Period</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <ng-container *ngFor="let goalItem of goalItems" >
-                <tr class="routineTr" *ngIf="goalItem.id !== edit">
-                  <td class="descriptionCell">
-                    <app-text-cell [itemId]="goalItem.id" [value]="goalItem.goalName" (save)="onSaveItem($event)" ></app-text-cell>
-                  </td>
-                  <td class="descriptionCell">
-                    <app-goal-period-selector [itemId]="goalItem.id" [selectedPeriod]="goalItem.period" (save)="onSaveItem($event)"></app-goal-period-selector>
-                    <!-- <app-text-cell [itemId]="goalItem.id" [value]="goalItem.period" (save)="onSaveItem($event)" ></app-text-cell>
-                    <select id="period" name="period" class="form-control" [(ngModel)]="selectedPeriod" required>
-                      <option value="0">Daily</option>
-                      <option value="1">Weekly</option>
-                      <option value="2">Monthly</option>
-                      <option value="3">Yearly</option>
-                      <option value="4">Lifetime</option>
-                    </select> -->
-                  </td>
-                  <td class="descriptionCell">
-                    <div class="inline">
-                      <app-text-cell [itemId]="goalItem.id" [value]="goalItem.description" (save)="onSaveItem($event)" #description></app-text-cell>
-                      <button class="btn btn-link btn-sm deleteButton" *ngIf="!description.editing" (click)="onDeleteItem(goalItem.id)">Delete</button>
-                    </div>
+      <ng-container *ngFor="let goalType of goalTypes; let i = index">
+        <h3>{{ goalType.goalTypeName }} Goals</h3>
+        <table class="table table-dark table-sm table-striped table-bordered table-hover">
+          <thead>
+            <tr class="routineThr">
+              <th>Goal</th>
+              <th>Date</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let goalItem of goalItems[i]">
+              <tr class="routineTr">
+                <td class="goalNameField">
+                  <app-text-cell [itemId]="goalItem.id" [value]="goalItem.goalName" (save)="onSaveItem($event)" fieldName="goalName" ></app-text-cell>
+                </td>
+                <td class="goalDateField">
+                  <app-text-cell [itemId]="goalItem.id" [value]="goalItem.goalDate | date:goalType.dateFormat" (save)="onSaveItem($event)"></app-text-cell>
+                </td>
+                <td class="textCell">
+                  <div class="inline">
+                    <app-text-cell [itemId]="goalItem.id" [value]="goalItem.description" (save)="onSaveItem($event)" #description fieldName="description"></app-text-cell>
+                    <button class="btn btn-link btn-sm deleteButton" *ngIf="!description.editing" (click)="onDeleteItem(goalItem.id)">Delete</button>
+                  </div>
 
-                  </td>
-                </tr>
-              </ng-container>
-            </tbody>
-          </table>
+                </td>
+              </tr>
+            </ng-container>
+
+          </tbody>
+        </table>
+      </ng-container>
+
+
       </div>
   </div>
 </div>

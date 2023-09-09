@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { GoalPeriod } from '../models/goal.model';
+// import { GoalPeriod } from '../models/goal.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -26,17 +26,17 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['../app.component.css']
 })
 export class GoalPeriodSelectorComponent implements OnInit {
-  @Input() selectedPeriod: GoalPeriod;
+  // @Input() selectedPeriod: GoalPeriod;
   @Input() itemId: string;
   @Output() save = new EventEmitter<any>();
 
-  goalPeriods = Object.keys(GoalPeriod).filter( k => typeof GoalPeriod[k as any] === "number");
+  // goalPeriods = Object.keys(GoalPeriod).filter( k => typeof GoalPeriod[k as any] === "number");
 
   editing = false;
   private selectedPeriodText: string;
 
   ngOnInit() {
-    this.selectedPeriodText = GoalPeriod[this.selectedPeriod];
+    // this.selectedPeriodText = GoalPeriod[this.selectedPeriod];
   }
 
 
@@ -44,9 +44,10 @@ export class GoalPeriodSelectorComponent implements OnInit {
     this.editing = true;
   }
 
-  onSelectChange(value: GoalPeriod) {
-    this.selectedPeriod = value;
-    this.selectedPeriodText = GoalPeriod[value];
+  // onSelectChange(value: GoalPeriod) {
+  onSelectChange(value: any) {
+    // this.selectedPeriod = value;
+    // this.selectedPeriodText = GoalPeriod[value];
     // this.selectedPeriodChange.emit(value);
     // this.editing = false;
   }
@@ -54,7 +55,7 @@ export class GoalPeriodSelectorComponent implements OnInit {
 
   onSave() {
     this.editing = false;
-    this.save.emit({itemId: this.itemId, period: this.selectedPeriod});
+    // this.save.emit({itemId: this.itemId, period: this.selectedPeriod});
   }
 
 

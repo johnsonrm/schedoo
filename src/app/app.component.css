@@ -28,6 +28,10 @@ h1 {
   color: rgb(177, 124, 9);
 }
 
+h3 {
+  color: #0944B0;
+}
+
 .form-control {
   background-color: #303030;
   color: white;
@@ -65,7 +69,15 @@ button {
   /* padding-left: 0.2rem; */
 }
 
-.descriptionCell {
+.textCell {
   max-width: 20rem;
   /* text-align: left; */
+}
+
+.goalDateField {
+  width: 8rem;
+}
+
+.goalNameField {
+  width: 15rem;
 }

@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
-import { CommonModule, Time } from '@angular/common';
 import { FirebaseService } from "./firebase.service";
 import { collection, doc, getDocs, addDoc, query, orderBy, limit, where, updateDoc, deleteDoc  } from 'firebase/firestore/lite';
 import { BehaviorSubject } from "rxjs";
-import { GoalItem, GoalPeriod } from "../models/goal.model";
+import { GoalItem, GoalType } from "../models/goal.model";
 
 @Injectable({providedIn: 'root'})
 export class GoalService {
@@ -20,15 +19,22 @@ export class GoalService {
 
    async getGoalItems() {
 
+    type GoalItemType = GoalItem;
+
     const db = this.firebaseService.db;
     const goalItemsCollection = collection(db, "goals");
-    const items: GoalItem[] = [];
+    const items: GoalItemType[] = [];
     const q = query(goalItemsCollection);
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach(doc => {
       const goalItem = doc.data();
-      items.push({id: doc.id, goalName: goalItem.goalName, period: goalItem.period, description: goalItem.description});
+      items.push({
+        id: doc.id,
+        goalName: goalItem.goalName,
+        goalDate: goalItem.goalDate,
+        goalType: goalItem.goalType,
+        description: goalItem.description});
     });
 
     this.goalItemsSubject.next(items);
@@ -37,22 +43,17 @@ export class GoalService {
 
    async addItem(item: GoalItem) {
 
+    // remove the id field before adding to firebase
+    const itemDoc: any = item;
+    delete itemDoc.id;
+
+    console.log(itemDoc);
+
     try {
       const db = this.firebaseService.db;
-      const docRef = await addDoc(collection(db, "goals"), {
-        goalName: item.goalName,
-        period: item.period,
-        description: item.description
-      });
-
-      const updatedItems = [...this.goalItemsSubject.value, {
-        id: docRef.id,
-        goalName: item.goalName,
-        period: item.period,
-        description: item.description
-      }];
-
-      console.log(updatedItems);
+      const docRef = await addDoc(collection(db, "goals"), item);
+      item.id = docRef.id;
+      const updatedItems = [...this.goalItemsSubject.value, item];
       this.goalItemsSubject.next(updatedItems);
 
     } catch (err) {
@@ -70,7 +71,6 @@ export class GoalService {
 
       await updateDoc(docRef, {
         goalName: updatedItem.goalName,
-        period: updatedItem.period,
         description: updatedItem.description
       });
 
@@ -79,7 +79,6 @@ export class GoalService {
           return {
             ...item,
             goalName: updatedItem.goalName,
-            duration: updatedItem.period,
             description: updatedItem.description
           };
         } else {

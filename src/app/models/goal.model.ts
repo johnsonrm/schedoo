@@ -1,22 +1,33 @@
-
-export enum GoalPeriod {
-  Daily,
-  Weekly,
-  Monthly,
-  Yearly,
-  Lifetime
+export class GoalType {
+  public goalTypeName: string;
+  public dateFormat: string;
 }
 
+export const goalTypes = [{
+  goalTypeName: 'Annual',
+  dateFormat: 'yyyy'
+}, {
+  goalTypeName: 'Monthly',
+  dateFormat: 'yyyy-MM'
+}, {
+  goalTypeName: 'Weekly',
+  dateFormat: 'yyyy-MM-dd'
+  }
+] as const;
 export class GoalItem {
-  public id: string;
+  public id: string = '';
   public goalName: string;
-  public period: GoalPeriod;
+  public goalDate: Date;
+  public goalType: string;
   public description: string;
 
-  constructor(goalName: string, goalPeriod: GoalPeriod, description: string, id?: string) {
+  constructor(goalName: string, goalDate: Date, goalType: string, description: string, id?: string) {
     this.id = id;
     this.goalName = goalName;
-    this.period = goalPeriod;
     this.description = description;
+    this.goalDate = goalDate;
+    this.goalType = goalType;
   }
 }
+
+

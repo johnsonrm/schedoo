@@ -5,28 +5,31 @@
 	</div>
 	<div class="modal-body">
     <form #goalItemForm="ngForm" (ngSubmit)="onSubmit(goalItemForm)">
+
       <div class="mb-3">
         <label for="goalName" class="form-label text-light" >Goal Name</label>
         <input type="text" id="goalName" class="form-control" data-bs-theme="dark" ngModel name="goalName" required>
       </div>
-      <div class="mb-3">
-        <!-- <label for="period" class="form-label text-light">Period</label>
-        <input type="choice" id="period" class="form-control" ngModel name="period" required> -->
-        <label for="period" class="form-label text-light">Period:</label>
-        <select id="period" name="period" class="form-control" [(ngModel)]="selectedPeriod" required>
-          <option value="0">Daily</option>
-          <option value="1">Weekly</option>
-          <option value="2">Monthly</option>
-          <option value="3">Yearly</option>
-          <option value="4">Lifetime</option>
-        </select>
 
+      <div class="mb-3">
+        <label for="goalType" class="form-label text-light">Type of Goal:</label>
+        <select name="goalType" class="form-control" [(ngModel)]="selectedGoalTypeIndex" (ngModelChange)="onSelectChange($event)">
+          <option *ngFor="let goalType of goalTypes; let i = index" [ngValue]="i" [selected]=" i === 0">
+            {{ goalType.goalTypeName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="goalDate" class="form-label text-light">Date</label>
+        <input type="date" class="form-control" data-bs-theme="dark" [(ngModel)]="defaultDate" name="goalDate" required>
       </div>
 
       <div class="mb-3">
         <label for="description" class="form-label text-light">Description</label>
         <input type="text" id="description" class="form-control" ngModel name="description" required maxlength="100">
       </div>
+
     </form>
 	</div>
 	<div class="modal-footer">

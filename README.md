@@ -2,41 +2,50 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
 
-# App Plan
+## App Plan
+
 Managing and tracking a daily routing along with monthly and weekly goals and milestones
-## Features
-### Feature: Daily Routing
+
+### Features
+
+#### Feature: Daily Routing
+
 - A manageable schedule for a daily routine
 
-### Feature: Annual Goals
+#### Feature: Annual Goals
+
 - Highest level goals for the calendar year
 
-### Feature: Monthly Goals
+#### Feature: Monthly Goals
+
 - Summary level goals for the month
-### Feature: Weekly Goals
+
+#### Feature: Weekly Goals
+
 - Week by week goals for the current month
 
-## Models
+#### Models
+
 - Daily Routine Schedule Item (time, duration, description)
 - Weekly Routine Schedule Item (day of week, description, status)
 - Annual Goal (year, description, status)
 - Monthly Goal (year, month, description, status)
 - Weekly Goal (Start date of week, description, status)
 
-## Services
+### Services
 
 - Routine Schedule Service - generally handles data operations for routine schedules
 - Goal Service - generally handles data operations for goals
 
-## Components
+### Components
+
 - Daily Routine
 - Weekly Routine
 - Annual Goals
 - Monthly Goals
 - Weekly Goals
 
-
-## Development server
+### Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
