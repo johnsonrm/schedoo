@@ -23,7 +23,7 @@
                   <app-text-cell [itemId]="goalItem.id" [value]="goalItem.goalName" (save)="onSaveItem($event)" fieldName="goalName" ></app-text-cell>
                 </td>
                 <td class="goalDateField">
-                  <app-text-cell [itemId]="goalItem.id" [value]="goalItem.goalDate | date:goalType.dateFormat" (save)="onSaveItem($event)"></app-text-cell>
+                  <app-date-cell [itemId]="goalItem.id" [value]="goalItem.goalDate | date:goalType.dateFormat" (save)="onSaveItem($event)" fieldName="goalDate" ></app-date-cell>
                 </td>
                 <td class="textCell">
                   <div class="inline">

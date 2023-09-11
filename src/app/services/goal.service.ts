@@ -65,21 +65,27 @@ export class GoalService {
 
    async updateItem(itemId: string, updatedItem: GoalItem) {
 
+    console.log(updatedItem);
+
     try {
       const db = this.firebaseService.db;
       const docRef = doc(db, "goals", itemId);
 
-      await updateDoc(docRef, {
+      const updatedDoc = await updateDoc(docRef, {
         goalName: updatedItem.goalName,
-        description: updatedItem.description
+        description: updatedItem.description,
+        goalDate: updatedItem.goalDate,
       });
+
+      console.log(updatedDoc);
 
       const updatedItems = this.goalItemsSubject.value.map(item => {
         if (item.id === itemId) {
           return {
             ...item,
             goalName: updatedItem.goalName,
-            description: updatedItem.description
+            description: updatedItem.description,
+            goalDate: updatedItem.goalDate,
           };
         } else {
           return item;

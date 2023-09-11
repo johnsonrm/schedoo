@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
     </ng-container>
     <ng-container *ngIf="editing">
       <div class='inline'>
-        <input type="description" [ngModel]="value" (ngModelChange)="onInputChange($event)" maxlength="100" />
+        <input type="text" [ngModel]="value" (ngModelChange)="onInputChange($event)" maxlength="100" />
         <button class="btn btn-link btn-sm" (click)="onSave()">Save</button>
         <button class="btn btn-link btn-sm" (click)="onCancel()">Cancel</button>
       </div>

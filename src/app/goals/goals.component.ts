@@ -3,6 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { NewGoalModalComponent } from './new-goal-modal/goal-item-modal.component';
 import { TextCellComponent } from '../shared/text-cell.component';
+import { DateCellComponent } from '../shared/date-cell.component';
 import { GoalPeriodSelectorComponent } from './period-cell.component';
 import { GoalService } from '../services/goal.service';
 import { GoalItem, GoalType, goalTypes } from '../models/goal.model';
@@ -10,7 +11,7 @@ import { GoalItem, GoalType, goalTypes } from '../models/goal.model';
 @Component({
   selector: 'app-goals',
   standalone: true,
-  imports: [CommonModule, FormsModule, TextCellComponent, NewGoalModalComponent, GoalPeriodSelectorComponent, DatePipe],
+  imports: [CommonModule, FormsModule, TextCellComponent, DateCellComponent, NewGoalModalComponent, GoalPeriodSelectorComponent, DatePipe],
   templateUrl: './goals.component.html',
   styleUrls: ['../app.component.css']
 })
@@ -34,16 +35,10 @@ export class GoalsComponent {
       console.log(items);
 
       goalTypes.forEach( (goalType, goalTypeIndex) => {
-        console.log(goalTypeIndex);
-        console.log(goalType.goalTypeName);
         this.goalItems[goalTypeIndex] = items.filter((item: GoalItem) => item.goalType === goalType.goalTypeName);
       });
 
-      // console.log(this.goalItems[0][0].goalDate.getFullYear());
-      console.log(this.goalItems);
-
     });
-
 
    }
 
@@ -51,33 +46,36 @@ export class GoalsComponent {
 
     console.log(item);
 
-    // try {
+    try {
 
-    //   // Ensure item has an itemId
-    //   if (!item.itemId) {
-    //     throw new Error("Item must have an id to be updated.");
-    //   }
+      // Ensure item has an itemId
+      if (!item.itemId) {
+        throw new Error("Item must have an id to be updated.");
+      }
 
-    //   const currentGoalItem = this.goalItems.find((i: GoalItem) => i.id === item.itemId);
+      const currentGoalItem: GoalItem | undefined = this.goalItems
+        .map(array => array.find((ii: GoalItem) => ii.id === item.itemId))
+        .find(item => item !== undefined);
 
-    //   if (!currentGoalItem) {
-    //     throw new Error("Item not found for id: " + item.itemId);
-    //   }
+      if (!currentGoalItem) {
+        throw new Error("Item not found for id: " + item.itemId);
+      }
 
-    //   const goalItem: GoalItem = {
-    //     id: currentGoalItem.id,
-    //     goalName: item.goalName || currentGoalItem.goalName,
-    //     // period: item.period || currentGoalItem.period,
-    //     description: item.description || currentGoalItem.description
-    //   };
+      const goalItem: GoalItem = {
+        id: currentGoalItem.id,
+        goalName: item.goalName || currentGoalItem.goalName,
+        goalDate: item.goalDate || currentGoalItem.goalDate,
+        goalType: item.goalType || currentGoalItem.goalType,
+        description: item.description || currentGoalItem.description
+      };
 
-    //   console.log(goalItem);
+      console.log(goalItem);
 
-    //   await this.goalService.updateItem(goalItem.id, goalItem);
+      await this.goalService.updateItem(goalItem.id, goalItem);
 
-    // } catch (error) {
-    //   console.error("Error saving item: ", error);
-    // }
+    } catch (error) {
+      console.error("Error saving item: ", error);
+    }
 
   }
 
