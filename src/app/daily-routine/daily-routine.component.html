@@ -5,8 +5,8 @@
 
     <app-daily-routine-item-modal></app-daily-routine-item-modal>
 
-    <div class="col-xs-12 col-md-9">
-          <table class="table table-dark table-sm table-striped table-bordered table-hover">
+    <div>
+          <table class="table table-dark table-sm table-bordered table-hover">
             <thead>
               <tr class="routineThr">
                 <th>Time</th>
@@ -15,10 +15,10 @@
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngFor="let dailyRoutineItem of dailyRoutineItems" >
+              <ng-container *ngFor="let dailyRoutineItem of dailyRoutineItems; let i = index;" >
                 <tr class="routineTr" *ngIf="dailyRoutineItem.id !== edit">
                   <td class="timeCell">
-                    <app-time-cell [itemId]="dailyRoutineItem.id" [value]="dailyRoutineItem.time" (save)="onSaveItem($event)" ></app-time-cell>
+                    <app-time-cell [itemId]="dailyRoutineItem.id" [value]=" startTimes[i]" (save)="onSaveItem($event)" ></app-time-cell>
                   </td>
                   <td class="durationCell">
                     <app-duration-cell [itemId]="dailyRoutineItem.id" [value]="dailyRoutineItem.duration" (save)="onSaveItem($event)" ></app-duration-cell>

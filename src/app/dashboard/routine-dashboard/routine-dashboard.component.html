@@ -1,0 +1,17 @@
+<div class="row">
+  <div>
+    <h3>Daily Routine</h3>
+    <div>
+      <ul>
+        <li *ngFor="let dailyRoutineItem of dailyRoutineItems; let i = index;" >
+          <div>
+            <div>{{ startTimes[i] }}</div>
+            <div>{{ endTimes[i] }}</div>
+            <!-- <div>({{ dailyRoutineItem.duration }} minutes)</div> -->
+            <div>{{ dailyRoutineItem.description }}</div>
+          </div>
+        </li>
+      </ul>
+      </div>
+  </div>
+</div>

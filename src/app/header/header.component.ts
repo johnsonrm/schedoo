@@ -7,7 +7,7 @@ import { User } from "firebase/auth";
   standalone: true,
   imports: [CommonModule],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['../app.component.css']
 })
 export class HeaderComponent implements OnInit {
 

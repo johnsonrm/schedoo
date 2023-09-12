@@ -1,0 +1,14 @@
+<div class="row">
+    <div>
+      <ng-container *ngFor="let goalType of goalTypes; let i = index">
+        <h3>{{ goalType.goalTypeName }} Goals for {{ (goalType.goalTypeName === 'Annual' ? year
+                    : ( goalType.goalTypeName === 'Monthly' ? monthName : null ) ) }}</h3>
+                <hr />
+                <ul>
+                  <ng-container *ngFor="let goalItem of goalItems[i]">
+                    <li [innerText]="goalItem.goalName" [title]="goalItem.description"></li>
+                  </ng-container>
+                </ul>
+      </ng-container>
+  </div>
+</div>

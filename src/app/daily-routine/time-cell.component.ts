@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-time-cell',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  styleUrls: ['./daily-routine.component.css'],
+  styleUrls: ['./daily-routine.component.css', '../app.component.css'],
   template: `
     <ng-container *ngIf="!editing">
       <div (click)="onEdit()">{{ value }}</div>

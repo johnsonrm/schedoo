@@ -1,15 +1,12 @@
 
+.nav-link:hover {
+  color: rgb(177, 124, 9);
+}
+
 table {
   background-color: rgb(24, 24, 24);
 }
 
-.table-sm>:not(caption)>*>* {
-  padding-left: 0.2rem;
-}
-
-.table-hover tbody tr:hover {
-  --bs-table-accent-bg: #151515;
-}
 
 .routineThr {
   padding-top: 2rem;
@@ -17,8 +14,29 @@ table {
 }
 
 .routineThr th {
-  color: #aaaaaa;
+  color: slategray;
+  background-color: rgb(1, 1, 56);
 }
+
+
+.table>:not(caption)>*:nth-child(even)>* {
+  background-color: black;
+}
+
+.table>:not(caption)>*:nth-child(odd)>*:not(th) {
+
+  background-color: rgb(20, 20, 20);
+}
+
+.table-sm>:not(caption)>*>* {
+  padding-left: 0.2rem;
+}
+
+
+.table-hover tbody tr:hover {
+  --bs-table-accent-bg: #151515;
+}
+
 
 .routineTr td {
   color: gray;
@@ -29,7 +47,7 @@ h1 {
 }
 
 h3 {
-  color: #0944B0;
+  color: rgb(133, 93, 7);
 }
 
 .form-control {
@@ -81,3 +99,9 @@ button {
 .goalNameField {
   width: 15rem;
 }
+
+.modal-header {
+  background-color: rgb(1, 1, 56);
+  color: slategray
+}
+

@@ -12,5 +12,6 @@ export class DailyRoutineItem
     this.time = time;
     this.duration = duration;
     this.description = description;
+
   }
 }

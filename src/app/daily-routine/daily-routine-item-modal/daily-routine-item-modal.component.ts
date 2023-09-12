@@ -10,6 +10,7 @@ import { RoutineScheduleService } from '../../services/routine-schedule.service'
   standalone: true,
   imports: [CommonModule, NgbDatepickerModule, FormsModule],
   templateUrl: './daily-routine-item-modal.component.html',
+  styleUrls: ['../../app.component.css']
 })
 export class DailyRoutineItemModalComponent {
 

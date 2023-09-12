@@ -17,16 +17,22 @@ export class RoutineScheduleService {
 
    }
 
+   convertStringToTime(timeString: string): Time {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    return { hours, minutes};
+  }
+
    async getDailyRoutineItems() {
 
     const db = this.firebaseService.db;
     const dailyRoutineItemsCollection = collection(db, "daily-routine-items");
     const items: DailyRoutineItem[] = [];
-    const q = query(dailyRoutineItemsCollection, orderBy("time"), limit(50));
+    const q = query(dailyRoutineItemsCollection, orderBy("time"), limit(100));
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach(doc => {
       const dailyRoutineItem = doc.data();
+      dailyRoutineItem.time = this.convertStringToTime(dailyRoutineItem.time);
       items.push({id: doc.id, time: dailyRoutineItem.time, duration: dailyRoutineItem.duration, description: dailyRoutineItem.description});
     });
 
@@ -104,6 +110,25 @@ export class RoutineScheduleService {
       console.error("Error deleting document: ", err);
       throw err;
     }
+  }
+
+  calcEndTime(startTime: Time, durationInMinutes: number): string {
+
+    // Extract hours and minutes from the startTime
+    const hours = startTime.hours;
+    const minutes = startTime.minutes;
+
+    // Calculate end time
+    const totalMinutes = hours * 60 + minutes + durationInMinutes;
+    const endHours = Math.floor(totalMinutes / 60);
+    const endMinutes = totalMinutes % 60;
+
+    const endTime: string = `${endHours.toString().padStart(2,'0')}:${endMinutes.toString().padStart(2,'0')}`;
+
+    // console.log(endTime);
+
+    return endTime;
+
   }
 
 

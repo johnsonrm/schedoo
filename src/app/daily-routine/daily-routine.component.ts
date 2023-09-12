@@ -12,16 +12,27 @@ import { DescriptionCellComponent } from './description-cell.component';
   standalone: true,
   imports: [CommonModule, FormsModule, DailyRoutineItemModalComponent, TimeCellComponent, DurationCellComponent, DescriptionCellComponent],
   templateUrl: './daily-routine.component.html',
-  styleUrls: ['./daily-routine.component.css']
+  styleUrls: ['./daily-routine.component.css', '../app.component.css']
 })
 export class DailyRoutineComponent {
 
   dailyRoutineItems: DailyRoutineItem[] = [];
+  startTimes: string[] = [];
+  endTimes: string[] = [];
 
   constructor(private dailyRoutineService: RoutineScheduleService) {
 
     dailyRoutineService.dailyRoutineItems.subscribe((items: DailyRoutineItem[]) => {
       this.dailyRoutineItems = items;
+
+      if (!items) return;
+
+      this.dailyRoutineItems.forEach((item: DailyRoutineItem, i) => {
+
+        this.startTimes[i] = `${item.time.hours.toString().padStart(2,'0')}:${item.time.minutes.toString().padStart(2,'0')}`;
+        this.endTimes[i] = dailyRoutineService.calcEndTime(item.time, item.duration);
+
+      });
     });
 
    }
