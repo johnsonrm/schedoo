@@ -6,7 +6,7 @@ A simple Angular based app to track and manage a daily routine schedule and goal
 
 ### Features
 
-#### Feature: Daily Routing
+#### Feature: Daily Routine
 
 - A manageable schedule for a daily routine
 
@@ -25,6 +25,7 @@ A simple Angular based app to track and manage a daily routine schedule and goal
 #### Feature: Dashboard
 
 - A high level presentation of all currently relevant goals along with the daily and weekly routine.
+
 #### Models
 
 - Daily Routine Schedule Item (time, duration, description)
