@@ -14,13 +14,15 @@ table {
 }
 
 .routineThr th {
-  color: slategray;
-  background-color: rgb(1, 1, 56);
+  color: rgb(76, 86, 97);
+  background-color: rgb(0, 0, 24);
 }
 
 
 .table>:not(caption)>*:nth-child(even)>* {
-  background-color: black;
+  /* background-color: black; */
+  background-color: slategray;
+  background-color: rgb(24, 36, 48);
 }
 
 .table>:not(caption)>*:nth-child(odd)>*:not(th) {
@@ -44,10 +46,13 @@ table {
 
 h1 {
   color: rgb(177, 124, 9);
+  margin-top: 2rem;
 }
 
 h3 {
-  color: rgb(133, 93, 7);
+  /* color: rgb(133, 93, 7); */
+  color: slategray;
+  margin-bottom: 1rem;
 }
 
 .form-control {
@@ -109,7 +114,7 @@ button {
 }
 
 .modal-header {
-  background-color: rgb(1, 1, 56);
+  background-color: rgb(0, 0, 24);
   color: slategray
 }
 

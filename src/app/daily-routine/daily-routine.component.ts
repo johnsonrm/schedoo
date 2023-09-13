@@ -56,7 +56,6 @@ export class DailyRoutineComponent {
         id: currentDailyRoutineItem.id,
         time: item.itemTime || currentDailyRoutineItem.time,
         duration: item.itemDuration || currentDailyRoutineItem.duration,
-        status: item.itemStatus || currentDailyRoutineItem.status,
         description: item.itemDescription || currentDailyRoutineItem.description
       };
 
