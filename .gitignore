@@ -43,3 +43,10 @@ Thumbs.db
 
 # Env files
 .env
+
+# PowerShell scripts
+*.ps1
+
+# environment files
+environment.ts
+environment.development.ts

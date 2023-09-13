@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApp, getApps } from "firebase/app";
 import { getAnalytics, Analytics } from "firebase/analytics";
 import { getAuth, signInWithPopup, GoogleAuthProvider, UserCredential, User } from "firebase/auth";
 import { getFirestore, collection, getDocs, Firestore } from 'firebase/firestore/lite';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({providedIn: 'root'})
 export class FirebaseService {
@@ -20,20 +21,12 @@ export class FirebaseService {
 
   constructor() {
 
-    // Firebase web app configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyC3R2K9r7aDJ31VBLksS3RFx1VvBPBaa40",
-      authDomain: "monthly-1.firebaseapp.com",
-      projectId: "monthly-1",
-      storageBucket: "monthly-1.appspot.com",
-      messagingSenderId: "41320600110",
-      appId: "1:41320600110:web:10196bac0fff97d39205bf",
-      measurementId: "G-ZJ07MY4V7X"
-    };
+    const firebaseConfig = environment.firebaseConfig;
 
     // Initialize Firebase
     try {
-      const app = initializeApp(firebaseConfig);
+      // const app = initializeApp(firebaseConfig);
+      const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
       this.analytics = getAnalytics(app);
       // Initialize Cloud Firestore and get a reference to the service
       this.db = getFirestore(app);
