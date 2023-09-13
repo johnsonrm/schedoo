@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   firebaseConfig: {
     apiKey: "...",
     authDomain: "...",
@@ -9,5 +9,4 @@ export const environment = {
     appId: "...",
     measurementId: "..."
   }
-// Compare this snippet from src/environments/environment.production.ts:
 };
