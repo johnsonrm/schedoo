@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, NgForm } from '@angular/forms';
-import { GoalItem, GoalType, goalTypes } from '../../models/goal.model'; //model for goals
+import { GoalItem, GoalType, goalTypes, statusTypes } from '../../models/goal.model'; //model for goals
 import { GoalService } from 'src/app/services/goal.service';  //service for goals
 
 @Component({
@@ -12,27 +12,41 @@ import { GoalService } from 'src/app/services/goal.service';  //service for goal
   templateUrl: './goal-item-modal.component.html',
   styleUrls: ['../../app.component.css']
 })
-export class NewGoalModalComponent {
+export class NewGoalModalComponent implements OnInit {
+
+  @Input() goalItem: GoalItem;
+
+  goalName: string;
+  goalType: string;
+  priority: number;
+  status: string;
+  description: string;
 
   private defaultDate: string = new Date().toLocaleDateString('en-CA');
-
-  // private defaultDateFormatted: string;
-
   private selectedGoalTypeIndex: number = 0;
-  private selectedGoalType: string = GoalType[this.selectedGoalTypeIndex];
+  private selectedStatusIndex: number = 0;
 
-  // goalTypes = Object.keys(GoalType).filter( k => typeof GoalType[k as any] === "number");
+  private selectedGoalType: string = GoalType[this.selectedGoalTypeIndex];
 
   //TODO: There must be a better way to make goalTypes available to the template
   public goalTypes = goalTypes;
+  public statusTypes = statusTypes;
 
 	closeResult = '';
 
 	constructor(private modalService: NgbModal, private goalService: GoalService) {
 
-    // this.defaultDateFormatted = this.datePipe.transform(this.defaultDate, 'yyyy-MM-dd');
-    // console.log(this.defaultDateFormatted);
-    console.log(this.defaultDate);
+  }
+
+  ngOnInit(): void {
+
+    if (!this.goalItem) return;
+
+    this.goalName = this.goalItem.goalName;
+    this.goalType = this.goalItem.goalType;
+    this.priority = this.goalItem.priority;
+    this.status = this.goalItem.status;
+    this.description = this.goalItem.description;
 
   }
 
@@ -53,13 +67,34 @@ export class NewGoalModalComponent {
 
     console.log(form.value);
 
-    this.goalService.addItem({
-      id: null,
-      goalName: form.value.goalName,
-      goalType: goalTypes[form.value.goalType].goalTypeName,
-      goalDate: form.value.goalDate,
-      description: form.value.description
-    });
+    if (this.goalItem.id) {
+
+      //update existing item
+      this.goalService.updateItem(
+        this.goalItem.id,
+        { id: null, goalName: form.value.goalName,
+        goalType: goalTypes[form.value.goalType].goalTypeName,
+        priority: form.value.priority,
+        status: statusTypes[form.value.status],
+        goalDate: form.value.goalDate,
+        description: form.value.description }
+      );
+
+    } else {
+
+      // else add a new item
+      this.goalService.addItem({
+        id: null,
+        goalName: form.value.goalName,
+        goalType: goalTypes[form.value.goalType].goalTypeName,
+        priority: form.value.priority,
+        status: statusTypes[form.value.status],
+        goalDate: form.value.goalDate,
+        description: form.value.description
+      });
+
+    }
+
 
     this.modalService.dismissAll();
 

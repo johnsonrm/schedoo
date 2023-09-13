@@ -32,11 +32,11 @@ table {
   padding-left: 0.2rem;
 }
 
+.table-dark tbody tr:hover {
+  /* --bs-table-hover-bg: #323539; */
+  --bs-table-hover-bg: #27303b;
 
-.table-hover tbody tr:hover {
-  --bs-table-accent-bg: #151515;
 }
-
 
 .routineTr td {
   color: gray;
@@ -59,11 +59,11 @@ h3 {
   display: inline;
 }
 
-.deleteButton {
+.linkButton {
   color: rgb(98, 97, 102);
 }
 
-.deleteButton:hover {
+.linkButton:hover {
   color: #0d6efd;
 }
 
@@ -98,6 +98,14 @@ button {
 
 .goalNameField {
   width: 15rem;
+}
+
+.priorityField {
+  width: 5rem;
+}
+
+.statusField {
+  width: 9rem;
 }
 
 .modal-header {

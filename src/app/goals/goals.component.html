@@ -4,8 +4,9 @@
     <p class="text-light">Here you can add and manage your goals</p>
 
     <app-new-goal-modal></app-new-goal-modal>
+    <hr />
 
-    <div class="col-xs-12 col-md-9">
+    <div>
       <ng-container *ngFor="let goalType of goalTypes; let i = index">
         <h3>{{ goalType.goalTypeName }} Goals</h3>
         <table class="table table-dark table-sm table-bordered table-hover">
@@ -13,6 +14,8 @@
             <tr class="routineThr">
               <th>Goal</th>
               <th>Date</th>
+              <th>Priority</th>
+              <th>Status</th>
               <th>Description</th>
             </tr>
           </thead>
@@ -25,10 +28,17 @@
                 <td class="goalDateField">
                   <app-date-cell [itemId]="goalItem.id" [value]="goalItem.goalDate | date:goalType.dateFormat" (save)="onSaveItem($event)" fieldName="goalDate" ></app-date-cell>
                 </td>
+                <td class="priorityField">
+                  <app-number-cell [itemId]="goalItem.id" [value]="goalItem.priority" (save)="onSaveItem($event)" fieldName="priority" ></app-number-cell>
+                </td>
+                <td class="statusField">
+                  <app-status-selector [itemId]="goalItem.id" [status]="goalItem.status" (save)="onSaveItem($event)" fieldName="status" ></app-status-selector>
+                </td>
                 <td class="textCell">
                   <div class="inline">
                     <app-text-cell [itemId]="goalItem.id" [value]="goalItem.description" (save)="onSaveItem($event)" #description fieldName="description"></app-text-cell>
-                    <button class="btn btn-link btn-sm deleteButton" *ngIf="!description.editing" (click)="onDeleteItem(goalItem.id)">Delete</button>
+                    <app-new-goal-modal [goalItem]="goalItem"></app-new-goal-modal>
+                    <button class="btn btn-link btn-sm linkButton" *ngIf="!description.editing" (click)="onDeleteItem(goalItem.id)">Delete</button>
                   </div>
 
                 </td>

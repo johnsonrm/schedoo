@@ -4,14 +4,16 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { NewGoalModalComponent } from './new-goal-modal/goal-item-modal.component';
 import { TextCellComponent } from '../shared/text-cell.component';
 import { DateCellComponent } from '../shared/date-cell.component';
+import { NumberCellComponent } from '../shared/number-cell.component';
 import { GoalPeriodSelectorComponent } from './period-cell.component';
 import { GoalService } from '../services/goal.service';
-import { GoalItem, GoalType, goalTypes } from '../models/goal.model';
+import { GoalItem, GoalType, goalTypes, statusTypes } from '../models/goal.model';
+import { StatusCellComponent } from '../shared/status-cell.component';
 
 @Component({
   selector: 'app-goals',
   standalone: true,
-  imports: [CommonModule, FormsModule, TextCellComponent, DateCellComponent, NewGoalModalComponent, GoalPeriodSelectorComponent, DatePipe],
+  imports: [CommonModule, FormsModule, TextCellComponent, DateCellComponent, NumberCellComponent, StatusCellComponent, NewGoalModalComponent, GoalPeriodSelectorComponent, DatePipe],
   templateUrl: './goals.component.html',
   styleUrls: ['../app.component.css']
 })
@@ -25,6 +27,7 @@ export class GoalsComponent {
 
   //TODO: There must be a better way to make goalTypes available to the template
   public goalTypes = goalTypes;
+  public statusTypes = statusTypes;
 
   constructor(private goalService: GoalService) {
 
@@ -34,6 +37,7 @@ export class GoalsComponent {
 
       console.log(items);
 
+      // group by goalType, which creates the array of arrays to create multiple tables in the html template
       goalTypes.forEach( (goalType, goalTypeIndex) => {
         this.goalItems[goalTypeIndex] = items.filter((item: GoalItem) => item.goalType === goalType.goalTypeName);
       });
@@ -66,6 +70,8 @@ export class GoalsComponent {
         goalName: item.goalName || currentGoalItem.goalName,
         goalDate: item.goalDate || currentGoalItem.goalDate,
         goalType: item.goalType || currentGoalItem.goalType,
+        priority: item.priority || currentGoalItem.priority,
+        status: item.status || currentGoalItem.status,
         description: item.description || currentGoalItem.description
       };
 

@@ -34,6 +34,8 @@ export class GoalService {
         goalName: goalItem.goalName,
         goalDate: goalItem.goalDate,
         goalType: goalItem.goalType,
+        priority: goalItem.priority,
+        status: goalItem.status,
         description: goalItem.description});
     });
 
@@ -75,9 +77,9 @@ export class GoalService {
         goalName: updatedItem.goalName,
         description: updatedItem.description,
         goalDate: updatedItem.goalDate,
+        priority: updatedItem.priority,
+        status: updatedItem.status
       });
-
-      console.log(updatedDoc);
 
       const updatedItems = this.goalItemsSubject.value.map(item => {
         if (item.id === itemId) {
@@ -86,6 +88,8 @@ export class GoalService {
             goalName: updatedItem.goalName,
             description: updatedItem.description,
             goalDate: updatedItem.goalDate,
+            priority: updatedItem.priority,
+            status: updatedItem.status
           };
         } else {
           return item;

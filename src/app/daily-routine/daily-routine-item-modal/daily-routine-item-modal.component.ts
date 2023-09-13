@@ -29,8 +29,9 @@ export class DailyRoutineItemModalComponent {
     const time: Time = form.value.time;
     const duration: number = form.value.duration;
     const description: string = form.value.description;
+    const status: string = form.value.status;
 
-    const dailyRoutineItem: DailyRoutineItem = new DailyRoutineItem(time, duration, description);
+    const dailyRoutineItem: DailyRoutineItem = new DailyRoutineItem(time, duration, status, description);
 
     this.dailyRoutineService.addItem(dailyRoutineItem);
 

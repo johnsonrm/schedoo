@@ -33,7 +33,7 @@ export class RoutineScheduleService {
     querySnapshot.forEach(doc => {
       const dailyRoutineItem = doc.data();
       dailyRoutineItem.time = this.convertStringToTime(dailyRoutineItem.time);
-      items.push({id: doc.id, time: dailyRoutineItem.time, duration: dailyRoutineItem.duration, description: dailyRoutineItem.description});
+      items.push({id: doc.id, time: dailyRoutineItem.time, status: dailyRoutineItem.status, duration: dailyRoutineItem.duration, description: dailyRoutineItem.description});
     });
 
     this.dailyRoutineItemsSubject.next(items);

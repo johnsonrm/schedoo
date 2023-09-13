@@ -8,7 +8,7 @@
 
       <div class="mb-3">
         <label for="goalName" class="form-label text-light" >Goal Name</label>
-        <input type="text" id="goalName" class="form-control" data-bs-theme="dark" ngModel name="goalName" required>
+        <input type="text" id="goalName" class="form-control" data-bs-theme="dark" [(ngModel)]="goalName" name="goalName" required>
       </div>
 
       <div class="mb-3">
@@ -21,13 +21,27 @@
       </div>
 
       <div class="mb-3">
+        <label for="status" class="form-label text-light">Status:</label>
+        <select name="status" class="form-control" [(ngModel)]="selectedStatusIndex" (ngModelChange)="onSelectChange($event)">
+          <option *ngFor="let status of statusTypes; let i = index" [ngValue]="i" [selected]=" i === 0">
+            {{ statusTypes[i] }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="priority" class="form-label text-light">Priority</label>
+        <input type="number" class="form-control" data-bs-theme="dark" [(ngModel)]="priority" name="priority" required>
+      </div>
+
+      <div class="mb-3">
         <label for="goalDate" class="form-label text-light">Date</label>
         <input type="date" class="form-control" data-bs-theme="dark" [(ngModel)]="defaultDate" name="goalDate" required>
       </div>
 
       <div class="mb-3">
         <label for="description" class="form-label text-light">Description</label>
-        <input type="text" id="description" class="form-control" ngModel name="description" required maxlength="100">
+        <input type="text" id="description" class="form-control" [(ngModel)]="description" name="description" required maxlength="100">
       </div>
 
     </form>
@@ -37,7 +51,6 @@
 	</div>
 </ng-template>
 
-<button class="btn btn-sm btn-outline-primary" (click)="open(content)">New</button>
-
-<hr />
+<button class="btn btn-sm btn-outline-primary" (click)="open(content)" *ngIf="!goalItem">New</button>
+<button class="btn btn-link btn-sm linkButton" *ngIf="goalItem" (click)="open(content)">Edit</button>
 
