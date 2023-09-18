@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "monthly-1"
+  },
+  "targets": {
+    "monthly-1": {
+      "hosting": {
+        "monthly": [
+          "monthly-1"
+        ]
+      }
+    }
   }
 }

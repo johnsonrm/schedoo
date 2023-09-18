@@ -7,8 +7,8 @@ import { RoutineScheduleService } from 'src/app/services/routine-schedule.servic
 
 @Component({
   selector: 'app-routine-dashboard',
-  standalone: true,
-  imports: [CommonModule, DailyRoutineComponent],
+  // standalone: true,
+  // imports: [CommonModule, DailyRoutineComponent],
   templateUrl: './routine-dashboard.component.html',
   styleUrls: [
     './routine-dashboard.component.css',

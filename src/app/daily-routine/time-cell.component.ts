@@ -5,8 +5,8 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-time-cell',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  // standalone: true,
+  // imports: [CommonModule, FormsModule],
   styleUrls: ['./daily-routine.component.css', '../app.component.css'],
   template: `
     <ng-container *ngIf="!editing">

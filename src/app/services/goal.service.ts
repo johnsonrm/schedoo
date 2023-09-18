@@ -3,7 +3,6 @@ import { FirebaseService } from "./firebase.service";
 import { collection, doc, getDocs, addDoc, query, orderBy, limit, where, updateDoc, deleteDoc  } from 'firebase/firestore/lite';
 import { BehaviorSubject } from "rxjs";
 import { GoalItem, GoalType } from "../models/goal.model";
-
 @Injectable({providedIn: 'root'})
 export class GoalService {
 

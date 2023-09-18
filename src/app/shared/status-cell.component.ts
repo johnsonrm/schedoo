@@ -6,8 +6,8 @@ import { StatusTypes, statusTypes } from '../models/goal.model';
 
 @Component({
   selector: 'app-status-selector',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  // standalone: true,
+  // imports: [CommonModule, FormsModule],
   template: `
   <ng-container *ngIf="!editing">
     <div (click)="onEdit()">{{ status }}</div>

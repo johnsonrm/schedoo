@@ -7,8 +7,8 @@ import { GoalService } from 'src/app/services/goal.service';  //service for goal
 
 @Component({
   selector: 'app-new-goal-modal',
-  standalone: true,
-  imports: [CommonModule, NgbDatepickerModule, FormsModule],
+  // standalone: true,
+  // imports: [CommonModule, NgbDatepickerModule, FormsModule],
   templateUrl: './goal-item-modal.component.html',
   styleUrls: ['../../app.component.css']
 })

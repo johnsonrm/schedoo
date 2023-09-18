@@ -9,8 +9,8 @@ import { DurationCellComponent } from './duration-cell.component';
 import { DescriptionCellComponent } from './description-cell.component';
 @Component({
   selector: 'app-daily-routine',
-  standalone: true,
-  imports: [CommonModule, FormsModule, DailyRoutineItemModalComponent, TimeCellComponent, DurationCellComponent, DescriptionCellComponent],
+  // standalone: true,
+  // imports: [CommonModule, FormsModule, DailyRoutineItemModalComponent, TimeCellComponent, DurationCellComponent, DescriptionCellComponent],
   templateUrl: './daily-routine.component.html',
   styleUrls: ['./daily-routine.component.css', '../app.component.css']
 })

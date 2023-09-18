@@ -7,8 +7,8 @@ import { RoutineScheduleService } from '../../services/routine-schedule.service'
 
 @Component({
   selector: 'app-daily-routine-item-modal',
-  standalone: true,
-  imports: [CommonModule, NgbDatepickerModule, FormsModule],
+  // standalone: true,
+  // imports: [CommonModule, NgbDatepickerModule, FormsModule],
   templateUrl: './daily-routine-item-modal.component.html',
   styleUrls: ['../../app.component.css']
 })

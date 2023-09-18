@@ -50,3 +50,4 @@ A simple Angular based app to track and manage a daily routine schedule and goal
 ### TODO
 
 - Make the dashboard actionable, i.e. allow for quick edits like completely goals and routine items
+- Add affirmations, rules, and journaling

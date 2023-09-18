@@ -4,8 +4,8 @@ import { FirebaseService } from '../services/firebase.service';
 import { User } from "firebase/auth";
 @Component({
   selector: 'app-header',
-  standalone: true,
-  imports: [CommonModule],
+  // standalone: true,
+  // imports: [CommonModule],
   templateUrl: './header.component.html',
   styleUrls: ['../app.component.css']
 })

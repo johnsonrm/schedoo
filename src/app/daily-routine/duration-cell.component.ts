@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-duration-cell',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  // standalone: true,
+  // imports: [CommonModule, FormsModule],
   styleUrls: ['./daily-routine.component.css'],
   template: `
     <ng-container *ngIf="!editing">

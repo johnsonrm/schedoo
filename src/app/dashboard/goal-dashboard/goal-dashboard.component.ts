@@ -7,8 +7,8 @@ import { DateCellComponent } from 'src/app/shared/date-cell.component';
 
 @Component({
   selector: 'app-goal-dashboard',
-  standalone: true,
-  imports: [CommonModule, TextCellComponent, DateCellComponent],
+  // standalone: true,
+  // imports: [CommonModule, TextCellComponent, DateCellComponent],
   templateUrl: './goal-dashboard.component.html',
   styleUrls: ['./goal-dashboard.component.css',
   '../dashboard.component.css']

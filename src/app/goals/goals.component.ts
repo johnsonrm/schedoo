@@ -12,8 +12,8 @@ import { StatusCellComponent } from '../shared/status-cell.component';
 
 @Component({
   selector: 'app-goals',
-  standalone: true,
-  imports: [CommonModule, FormsModule, TextCellComponent, DateCellComponent, NumberCellComponent, StatusCellComponent, NewGoalModalComponent, GoalPeriodSelectorComponent, DatePipe],
+  // standalone: true,
+  // imports: [CommonModule, FormsModule, TextCellComponent, DateCellComponent, NumberCellComponent, StatusCellComponent, NewGoalModalComponent, GoalPeriodSelectorComponent, DatePipe],
   templateUrl: './goals.component.html',
   styleUrls: ['../app.component.css']
 })
@@ -24,6 +24,7 @@ export class GoalsComponent {
   // goalTypeKeys = Object.keys(GoalType).filter( k => typeof GoalType[k as any] === "number");
   // goalTypeIdices = Object.keys(GoalType).filter( k => typeof GoalType[k as any] !== "number");
 
+  itemToDeleteId: string = '';
 
   //TODO: There must be a better way to make goalTypes available to the template
   public goalTypes = goalTypes;
@@ -98,6 +99,26 @@ export class GoalsComponent {
     }
 
   }
+
+
+  // onDeleteItem(itemId: string) {
+  //   // Trigger the modal
+  //   $('#confirmModal').modal('show');
+
+  //   // Store the item ID in a property for deletion
+  //   this.itemToDeleteId = itemId;
+  // }
+
+  // onDeleteConfirmed() {
+  //   try {
+  //     this.goalService.deleteItem(this.itemToDeleteId);
+  //   } catch (error) {
+  //     console.error("Error deleting item: ", error);
+  //   }
+
+  //   // Close the modal after deletion
+  //   $('#confirmModal').modal('hide');
+  // }
 
 
 }
