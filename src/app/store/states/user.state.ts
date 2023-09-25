@@ -82,6 +82,8 @@ export class UserState {
                 });
               });
 
+            this.sortDailyRoutineItems(dailyRoutineItems);
+
             userDocData.dailyRoutines = dailyRoutineItems;
 
               // set the user data in the state
@@ -235,6 +237,8 @@ export class UserState {
           const newUserData: User = ctx.getState().userData;
           newUserData.dailyRoutines.push(action.payload);
 
+          this.sortDailyRoutineItems(newUserData.dailyRoutines);
+
           if (newDailyRoutine) {
             ctx.patchState({userData: newUserData});
           }
@@ -355,6 +359,16 @@ export class UserState {
       }
   }
 
+
+  private sortDailyRoutineItems(dailyRoutineItems: DailyRoutine[]) {
+
+    if(dailyRoutineItems) {
+      dailyRoutineItems.sort( (a, b) => {
+        return a.time.hours - b.time.hours || a.time.minutes - b.time.minutes;
+      });
+    }
+
+  }
 
 
 }

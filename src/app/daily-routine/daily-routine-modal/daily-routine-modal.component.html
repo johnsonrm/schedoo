@@ -7,15 +7,15 @@
     <form #routineItemForm="ngForm" (ngSubmit)="onSubmit(routineItemForm)">
       <div class="mb-3">
         <label for="time" class="form-label text-light" >Time of day</label>
-        <input type="time" id="time" class="form-control" data-bs-theme="dark" ngModel name="time" required>
+        <input type="time" id="time" class="form-control" data-bs-theme="dark" [(ngModel)]="dailyRoutineTime" name="time" required>
       </div>
       <div class="mb-3">
         <label for="Duration" class="form-label text-light">Duration</label>
-        <input type="number" id="duration" class="form-control" ngModel name="duration" required>
+        <input type="number" id="duration" class="form-control" [(ngModel)]="dailyRoutineItem.duration" name="duration" required>
       </div>
       <div class="mb-3">
         <label for="description" class="form-label text-light">Description</label>
-        <input type="text" id="description" class="form-control" ngModel name="description" required maxlength="100">
+        <input type="text" id="description" class="form-control" [(ngModel)]="dailyRoutineItem.description" name="description" required maxlength="100">
       </div>
       <!-- <div class="mb-3">
         <button class="btn btn-primary btn-dark" type="submit" [disabled]="!routineItemForm.valid" >Add</button>
@@ -27,6 +27,6 @@
 	</div>
 </ng-template>
 
-<button class="btn btn-sm btn-outline-primary" (click)="open(content)" *ngIf="!dailyRoutineItem">New</button>
-<button class="btn btn-link btn-sm linkButton" *ngIf="dailyRoutineItem" (click)="open(content)">Edit</button>
+<button class="btn btn-sm btn-outline-primary" (click)="open(content)" *ngIf="!dailyRoutineItem.id">New</button>
+<button class="btn btn-link btn-sm linkButton" *ngIf="dailyRoutineItem.id" (click)="open(content)">Edit</button>
 

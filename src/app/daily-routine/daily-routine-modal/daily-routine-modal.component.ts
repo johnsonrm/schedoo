@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule, Time } from '@angular/common';
+import { OnInit } from '@angular/core';
 import { Input } from '@angular/core';
 import { NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, NgForm } from '@angular/forms';
@@ -15,13 +16,35 @@ import { RoutineScheduleService } from 'src/app/services/routine-schedule.servic
   templateUrl: './daily-routine-modal.component.html',
   styleUrls: ['../../app.component.css']
 })
-export class DailyRoutineModalComponent {
+export class DailyRoutineModalComponent implements OnInit {
 
   @Input() dailyRoutineItem: DailyRoutine;
 
-	closeResult = '';
+  dailyRoutineTime: string = '06:00';
+  // dailyRoutineDuration: number = 15;
+  // dailyRoutineDescription: string = '';
 
 	constructor(private modalService: NgbModal, private store: Store, private routineScheduleService: RoutineScheduleService) {}
+
+  ngOnInit(): void {
+
+    if (!this.dailyRoutineItem) {
+      this.dailyRoutineItem = {
+        id: null,
+        time: {hours: 6, minutes: 0},
+        duration: 15,
+        description: "",
+      }
+
+    } else {
+      this.dailyRoutineTime = this.dailyRoutineItem.time.hours.toString().padStart(2,'0') + ':' + this.dailyRoutineItem.time.minutes.toString().padStart(2,'0');
+    }
+
+    // this.dailyRoutineTime = this.dailyRoutineItem.time;
+    // this.dailyRoutineDuration = this.dailyRoutineItem.duration;
+    // this.dailyRoutineDescription = this.dailyRoutineItem.description;
+
+  }
 
 	open(content) {
 
