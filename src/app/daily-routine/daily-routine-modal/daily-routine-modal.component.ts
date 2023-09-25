@@ -42,7 +42,16 @@ export class DailyRoutineModalComponent {
       description: description,
     };
 
-    this.store.dispatch(new UserActions.AddDailyRoutine(dailyRoutine));
+    if (this.dailyRoutineItem?.id) {
+
+      dailyRoutine.id = this.dailyRoutineItem.id;
+      this.store.dispatch(new UserActions.UpdateDailyRoutine(dailyRoutine));
+
+    } else {
+
+      this.store.dispatch(new UserActions.AddDailyRoutine(dailyRoutine));
+
+    }
 
     this.modalService.dismissAll();
 
