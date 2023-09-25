@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, Input } from '@angular/core';
 import { CommonModule, Time } from '@angular/common';
-import { OnInit } from '@angular/core';
-import { Input } from '@angular/core';
 import { NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Store } from '@ngxs/store';
@@ -20,30 +18,32 @@ export class DailyRoutineModalComponent implements OnInit {
 
   @Input() dailyRoutineItem: DailyRoutine;
 
-  dailyRoutineTime: string = '06:00';
-  // dailyRoutineDuration: number = 15;
-  // dailyRoutineDescription: string = '';
+  dailyRoutineTime: string = '';
 
 	constructor(private modalService: NgbModal, private store: Store, private routineScheduleService: RoutineScheduleService) {}
 
   ngOnInit(): void {
 
     if (!this.dailyRoutineItem) {
-      this.dailyRoutineItem = {
-        id: null,
-        time: {hours: 6, minutes: 0},
-        duration: 15,
-        description: "",
-      }
-
+      this.setDefaults();
     } else {
-      this.dailyRoutineTime = this.dailyRoutineItem.time.hours.toString().padStart(2,'0') + ':' + this.dailyRoutineItem.time.minutes.toString().padStart(2,'0');
+      this.dailyRoutineTime = this.setTimeString(this.dailyRoutineItem.time);
     }
 
-    // this.dailyRoutineTime = this.dailyRoutineItem.time;
-    // this.dailyRoutineDuration = this.dailyRoutineItem.duration;
-    // this.dailyRoutineDescription = this.dailyRoutineItem.description;
+  }
 
+  private setDefaults() {
+    this.dailyRoutineItem = {
+      id: null,
+      time: {hours: 6, minutes: 0},
+      duration: 15,
+      description: "",
+    }
+    this.dailyRoutineTime = this.setTimeString(this.dailyRoutineItem.time);
+  }
+
+  private setTimeString(time: Time): string {
+    return (time.hours?.toString().padStart(2,'0') + ':' + time.minutes?.toString().padStart(2,'0'));
   }
 
 	open(content) {
@@ -65,18 +65,30 @@ export class DailyRoutineModalComponent implements OnInit {
       description: description,
     };
 
-    if (this.dailyRoutineItem?.id) {
+    try {
 
-      dailyRoutine.id = this.dailyRoutineItem.id;
-      this.store.dispatch(new UserActions.UpdateDailyRoutine(dailyRoutine));
+      if (this.dailyRoutineItem?.id) {
 
-    } else {
+        dailyRoutine.id = this.dailyRoutineItem.id;
+        this.store.dispatch(new UserActions.UpdateDailyRoutine(dailyRoutine));
 
-      this.store.dispatch(new UserActions.AddDailyRoutine(dailyRoutine));
+      } else {
+
+        this.store.dispatch(new UserActions.AddDailyRoutine(dailyRoutine));
+
+      }
+
+        this.setDefaults();
+
+        this.modalService.dismissAll();
+
+    } catch (error) {
+
+      console.error("Error saving item: ", error);
+
+      //TODO: display error message to user
 
     }
-
-    this.modalService.dismissAll();
 
   }
 
