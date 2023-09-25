@@ -1,6 +1,6 @@
 import { Time } from '@angular/common';
-import { statusTypes } from '../models/goal.model';
-export class DailyRoutineItem
+import { statusTypes } from './goal.model';
+export class DailyRoutine
 {
   public id: string;
   public time: Time;

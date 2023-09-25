@@ -27,7 +27,6 @@
 	</div>
 </ng-template>
 
-<button class="btn btn-sm btn-outline-primary" (click)="open(content)">New</button>
-
-<hr />
+<button class="btn btn-sm btn-outline-primary" (click)="open(content)" *ngIf="!dailyRoutineItem">New</button>
+<button class="btn btn-link btn-sm linkButton" *ngIf="dailyRoutineItem" (click)="open(content)">Edit</button>
 

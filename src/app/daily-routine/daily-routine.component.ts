@@ -1,38 +1,35 @@
 import { Component } from '@angular/core';
 import { CommonModule, Time } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { DailyRoutineItem } from '../models/daily.routine.item.model'; //model for daily routine item
-import { RoutineScheduleService } from '../services/routine-schedule.service'; //service for daily routine item
-import { DailyRoutineItemModalComponent } from './daily-routine-item-modal/daily-routine-item-modal.component';
+import { Store } from '@ngxs/store';
+import { DailyRoutine } from '../models/daily.routine.model'; //model for daily routine item
+import { User } from '../models/user.model';
+import { UserStateModel } from '../store/states/user.state';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { DailyRoutineModalComponent } from './daily-routine-modal/daily-routine-modal.component';
 import { TimeCellComponent } from './time-cell.component';
 import { DurationCellComponent } from './duration-cell.component';
 import { DescriptionCellComponent } from './description-cell.component';
+import { RoutineScheduleService } from '../services/routine-schedule.service';
+import { UserActions } from '../store/actions/user.action';
 @Component({
   selector: 'app-daily-routine',
-  // standalone: true,
-  // imports: [CommonModule, FormsModule, DailyRoutineItemModalComponent, TimeCellComponent, DurationCellComponent, DescriptionCellComponent],
+  standalone: true,
+  imports: [CommonModule, FormsModule, DailyRoutineModalComponent, TimeCellComponent, DurationCellComponent, DescriptionCellComponent],
   templateUrl: './daily-routine.component.html',
   styleUrls: ['./daily-routine.component.css', '../app.component.css']
 })
 export class DailyRoutineComponent {
 
-  dailyRoutineItems: DailyRoutineItem[] = [];
-  startTimes: string[] = [];
-  endTimes: string[] = [];
+  @Select((state: {user: UserStateModel}) => state.user.userData) userData$ : Observable<User>;
 
-  constructor(private dailyRoutineService: RoutineScheduleService) {
+  dailyRoutineItems: DailyRoutine[] = [];
 
-    dailyRoutineService.dailyRoutineItems.subscribe((items: DailyRoutineItem[]) => {
-      this.dailyRoutineItems = items;
+  constructor(private store: Store, private dailyRoutineService: RoutineScheduleService) {
 
-      if (!items) return;
-
-      this.dailyRoutineItems.forEach((item: DailyRoutineItem, i) => {
-
-        this.startTimes[i] = `${item.time.hours.toString().padStart(2,'0')}:${item.time.minutes.toString().padStart(2,'0')}`;
-        this.endTimes[i] = dailyRoutineService.calcEndTime(item.time, item.duration);
-
-      });
+    this.userData$.subscribe((userData: User) => {
+      this.dailyRoutineItems = userData.dailyRoutines;
     });
 
    }
@@ -46,33 +43,33 @@ export class DailyRoutineComponent {
         throw new Error("Item must have an id to be updated.");
       }
 
-      const currentDailyRoutineItem = this.dailyRoutineItems.find((i: DailyRoutineItem) => i.id === item.itemId);
+      const currentDailyRoutineItem: DailyRoutine = this.dailyRoutineItems.find((i: DailyRoutine) => i.id === item.itemId);
 
       if (!currentDailyRoutineItem) {
         throw new Error("Item not found for id: " + item.itemId);
       }
 
-      const dailyRoutineItem: DailyRoutineItem = {
+      const dailyRoutineItem: DailyRoutine = {
         id: currentDailyRoutineItem.id,
-        time: item.itemTime || currentDailyRoutineItem.time,
+        time: (item.itemTime ? this.dailyRoutineService.convertStringToTime(item.itemTime) : currentDailyRoutineItem.time ),
         duration: item.itemDuration || currentDailyRoutineItem.duration,
         description: item.itemDescription || currentDailyRoutineItem.description
       };
 
-      await this.dailyRoutineService.updateItem(dailyRoutineItem.id, dailyRoutineItem);
+      this.store.dispatch(new UserActions.UpdateDailyRoutine(dailyRoutineItem));
 
     } catch (error) {
       console.error("Error saving item: ", error);
     }
   }
 
-  onDeleteItem(itemId: string) {
+  onDeleteItem(dailyRoutine: DailyRoutine) {
 
     // TODO: prompt user to confirm delete
 
     try {
 
-      this.dailyRoutineService.deleteItem(itemId);
+      this.store.dispatch(new UserActions.RemoveDailyRoutine(dailyRoutine));
 
     } catch (error) {
       console.error("Error deleting item: ", error);

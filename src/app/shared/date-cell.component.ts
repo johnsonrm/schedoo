@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-date-cell',
-  // standalone: true,
-  // imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   styleUrls: ['../app.component.css'],
   template: `
     <ng-container *ngIf="!editing">

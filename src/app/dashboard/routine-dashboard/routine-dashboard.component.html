@@ -3,11 +3,11 @@
     <h3>Daily Routine</h3>
     <div>
       <ul>
-        <li *ngFor="let dailyRoutineItem of dailyRoutineItems; let i = index;" >
+        <li *ngFor="let dailyRoutineItem of dailyRoutines; let i = index;" >
           <div>
-            <div>{{ startTimes[i] }}</div>
-            <div>{{ endTimes[i] }}</div>
-            <!-- <div>({{ dailyRoutineItem.duration }} minutes)</div> -->
+            <div>{{ dailyRoutineItem.time.hours.toString().padStart(2,'0') + ':' + dailyRoutineItem.time.minutes.toString().padStart(2,'0') }}</div>
+            <div>{{ dailyRoutineItem.time.hours.toString().padStart(2,'0') + ':' + (dailyRoutineItem.time.minutes + dailyRoutineItem.duration).toString().padStart(2,'0') }}</div>
+            <div>({{ dailyRoutineItem.duration }} min)</div>
             <div>{{ dailyRoutineItem.description }}</div>
           </div>
         </li>

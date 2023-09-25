@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AppCheck, initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
-import { initializeApp, getApp, getApps } from "firebase/app";
-import { getAnalytics, Analytics } from "firebase/analytics";
-import { getAuth, signInWithPopup, GoogleAuthProvider, UserCredential, User } from "firebase/auth";
-import { getFirestore, collection, getDocs, Firestore } from 'firebase/firestore/lite';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from 'src/environments/environment.development';
+import { provideAppCheck, initializeAppCheck, ReCaptchaEnterpriseProvider } from '@angular/fire/app-check';
+import { getAuth, signInWithPopup, GoogleAuthProvider, User } from '@angular/fire/auth';
+import { Firestore, collection, CollectionReference, doc, setDoc, getDoc, getDocs, DocumentData, DocumentReference, query  } from '@angular/fire/firestore';
+import { Store } from '@ngxs/store';
+import { UserActions } from '../store/actions/user.action';
 
 @Injectable({
   providedIn: 'root',
@@ -17,102 +15,87 @@ export class FirebaseService {
   Handles Firebase authentication and database access
   */
 
-  private firebaseReCAPTCHASiteKeyUrl = "https://getrecaptchalivekey-nwbh4vxb3a-uc.a.run.app";
-  private reCAPTCHASiteKey: string = null;
-  private appCheck: AppCheck = null;
+  public usersCollection: CollectionReference = null;
+  public userDocData: DocumentData = null;
 
-  private loggedInUserSubject = new BehaviorSubject<User>(null);
-  public loggedInUser = this.loggedInUserSubject.asObservable();
+  constructor(private http: HttpClient, public firestore: Firestore, public store: Store) {
 
-  public analytics: Analytics = null;
-  public db: Firestore = null;
+      // Initialize users collection and handle authentification state changes
 
-  constructor(private http: HttpClient) {
-  // constructor() {
-
-    const firebaseConfig = environment.firebaseConfig;
-
-      // Initialize Firebase
       try {
-        // const app = initializeApp(firebaseConfig);
-        console.log('FirebaseService initializeApp');
-        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-        http.get(this.firebaseReCAPTCHASiteKeyUrl).subscribe((data) => {
-          this.reCAPTCHASiteKey = data['siteKey'];
-          // console.log(this.reCAPTCHASiteKey);
-            // Create a ReCaptchaEnterpriseProvider instance using your reCAPTCHA Enterprise
-            // site key and pass it to initializeAppCheck().
-            this.appCheck = initializeAppCheck(app, {
-              provider: new ReCaptchaEnterpriseProvider(this.reCAPTCHASiteKey),
-              isTokenAutoRefreshEnabled: true // Set to true to allow auto-refresh.
+        this.usersCollection = collection(firestore, 'users');
+
+        //handle authentification state changes
+        const auth = getAuth();
+        auth.onAuthStateChanged((user) => {
+
+          if (user) {
+            this.store.dispatch(new UserActions.Login(user.uid)).subscribe((data: User) => {
+              try {
+                getDoc(doc(this.usersCollection, user.uid)).then((doc) => {
+                  this.userDocData = doc.data();
+                });
+              } catch(err) {
+                throw new Error('Unable to find data for logged in user.');
+              }
+
             });
+
+          } else {
+            console.log('FirebaseService login - user logged out');
+            this.store.dispatch(new UserActions.Logout()).subscribe(()=>{
+              this.userDocData = null;
+            });
+          }
         });
 
-        this.analytics = getAnalytics(app);
-        // Initialize Cloud Firestore and get a reference to the service
-        this.db = getFirestore(app);
-
-        // call Firebase Function?
-
-        //https://getrecaptchalivekey-nwbh4vxb3a-uc.a.run.app
-
-
       } catch(err) {
-        throw new Error('Firebase initialization error');
+        throw new Error('Error when initializing the Firebase service.');
       }
-
-    //handle authentification state changes
-    const auth = getAuth();
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        console.log('FirebaseService login - user logged in');
-        this.loggedInUserSubject.next(user);
-      } else {
-        console.log('FirebaseService login - user logged out');
-        this.loggedInUserSubject.next(null);
-      }
-    });
-
 
   }
 
-  // getSecret(secretName: string) {
-  //   const url = `https://secretmanager.googleapis.com/v1/projects/YOUR_PROJECT_ID/secrets/${secretName}/versions/latest:access`;
-
-  //   return this.http.get(url);
-  // }
-
   async signIn() {
-
-    console.log('FirebaseService login');
 
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
 
-    await signInWithPopup(auth, provider).catch((error) => {
+    const userCred = await signInWithPopup(auth, provider).catch((error) => {
       throw new Error('Firebase login error');
     });
 
+    if (userCred?.user) {
+
+      const user = userCred.user;
+
+      // Create a document in the users collection with the uid of the user
+      setDoc(doc(this.usersCollection, user.uid), {
+        email: user.email,
+        uid: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        emailVerified: user.emailVerified,
+        providerId: user.providerId,
+      }).catch((error) => {
+        throw new Error('Unable to create a data record for the new user.');
+      });
 
 
+    } else {
+      console.log('FirebaseService - user logged out');
+    }
 
 
   }
 
   signOut() {
 
-    console.log('FirebaseService logout');
     const auth = getAuth();
     auth.signOut().catch((error) => {
       throw new Error('Firebase logout error');
     });
 
   }
-
-
-
-
-
 
 }

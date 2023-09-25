@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { CommonModule, Time } from '@angular/common';
-import { DailyRoutineItem } from 'src/app/models/daily.routine.item.model';
+import { DailyRoutine } from 'src/app/models/daily.routine.model';
 import { DailyRoutineComponent } from 'src/app/daily-routine/daily-routine.component';
 import { RoutineScheduleService } from 'src/app/services/routine-schedule.service';
-
+import { Select } from '@ngxs/store';
+import { UserStateModel } from 'src/app/store/states/user.state';
+import { User } from 'src/app/models/user.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-routine-dashboard',
-  // standalone: true,
-  // imports: [CommonModule, DailyRoutineComponent],
+  standalone: true,
+  imports: [CommonModule, DailyRoutineComponent],
   templateUrl: './routine-dashboard.component.html',
   styleUrls: [
     './routine-dashboard.component.css',
@@ -17,28 +20,16 @@ import { RoutineScheduleService } from 'src/app/services/routine-schedule.servic
 })
 export class RoutineDashboardComponent {
 
-  dailyRoutineItems: DailyRoutineItem[] = [];
-  startTimes: string[] = [];
-  endTimes: string[] = [];
+  @Select((state: {user: UserStateModel}) => state.user.userData) userData$ : Observable<User>;
+
+  dailyRoutines: DailyRoutine[] = [];
 
   constructor(private dailyRoutineService: RoutineScheduleService) {
 
-    dailyRoutineService.dailyRoutineItems.subscribe((items: DailyRoutineItem[]) => {
-
-      this.dailyRoutineItems = items;
-
-      if (!items) return;
-
-      this.dailyRoutineItems.forEach((item: DailyRoutineItem, i) => {
-
-        this.startTimes[i] = `${item.time.hours.toString().padStart(2,'0')}:${item.time.minutes.toString().padStart(2,'0')}`;
-        this.endTimes[i] = dailyRoutineService.calcEndTime(item.time, item.duration);
-
-      });
-
-      console.log(this.startTimes);
-
+    this.userData$.subscribe((userData: User) => {
+      this.dailyRoutines = userData.dailyRoutines;
     });
+
 
    }
 

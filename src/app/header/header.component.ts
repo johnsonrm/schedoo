@@ -2,31 +2,30 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FirebaseService } from '../services/firebase.service';
 import { User } from "firebase/auth";
+import { Select } from '@ngxs/store';
+import { UserStateModel } from '../store/states/user.state';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-header',
-  // standalone: true,
-  // imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './header.component.html',
   styleUrls: ['../app.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
-  signedIn: boolean = false;
-  user: User = null;
+  @Select((state: {user: UserStateModel}) => state.user.userData) userData$ : Observable<User>;
 
-  constructor(private firebaseService: FirebaseService) { }
+  public signedIn: boolean = false;
 
-  ngOnInit(): void {
-    this.firebaseService.loggedInUser.subscribe((user) => {
-      if (user) {
-        this.user = user;
-        this.signedIn = true;
-      } else {
-        this.user = null;
-        this.signedIn = false;
-      }
+  constructor(private firebaseService: FirebaseService) {
+
+    this.userData$.subscribe((userData: User) => {
+      this.signedIn = userData?.uid ? true : false;
+      console.log("user signed in? " + this.signedIn);
     });
-  }
+
+   }
 
   signIn() {
     this.firebaseService.signIn();

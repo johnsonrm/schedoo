@@ -33,7 +33,7 @@ export const statusTypes = [
   StatusTypes.Canceled
 ];
 
-export class GoalItem {
+export class Goal {
   public id: string = '';
   public goalName: string;
   public goalDate: Date;

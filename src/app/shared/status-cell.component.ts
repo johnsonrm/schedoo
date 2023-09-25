@@ -1,13 +1,12 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-// import { GoalPeriod } from '../models/goal.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { StatusTypes, statusTypes } from '../models/goal.model';
 
 @Component({
   selector: 'app-status-selector',
-  // standalone: true,
-  // imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   template: `
   <ng-container *ngIf="!editing">
     <div (click)="onEdit()">{{ status }}</div>

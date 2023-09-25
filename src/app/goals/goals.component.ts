@@ -1,55 +1,54 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { UserActions } from '../store/actions/user.action';
+import { Goal, goalTypes, statusTypes } from '../models/goal.model';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
-import { NewGoalModalComponent } from './new-goal-modal/goal-item-modal.component';
+import { FormsModule } from '@angular/forms';
 import { TextCellComponent } from '../shared/text-cell.component';
 import { DateCellComponent } from '../shared/date-cell.component';
 import { NumberCellComponent } from '../shared/number-cell.component';
-import { GoalPeriodSelectorComponent } from './period-cell.component';
-import { GoalService } from '../services/goal.service';
-import { GoalItem, GoalType, goalTypes, statusTypes } from '../models/goal.model';
 import { StatusCellComponent } from '../shared/status-cell.component';
+import { NewGoalModalComponent } from './new-goal-modal/goal-item-modal.component';
+import { GoalPeriodSelectorComponent } from './period-cell.component';
+import { User } from '../models/user.model';
+import { UserStateModel } from '../store/states/user.state';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-goals',
-  // standalone: true,
-  // imports: [CommonModule, FormsModule, TextCellComponent, DateCellComponent, NumberCellComponent, StatusCellComponent, NewGoalModalComponent, GoalPeriodSelectorComponent, DatePipe],
+  standalone: true,
+  imports: [CommonModule, FormsModule, TextCellComponent, DateCellComponent, NumberCellComponent, StatusCellComponent, NewGoalModalComponent, GoalPeriodSelectorComponent, DatePipe],
   templateUrl: './goals.component.html',
   styleUrls: ['../app.component.css']
 })
 export class GoalsComponent {
 
-  goalItems: GoalItem[][] = [];
+  @Select((state: {user: UserStateModel}) => state.user.userData) userData$ : Observable<User>;
 
-  // goalTypeKeys = Object.keys(GoalType).filter( k => typeof GoalType[k as any] === "number");
-  // goalTypeIdices = Object.keys(GoalType).filter( k => typeof GoalType[k as any] !== "number");
+  goalItems: Goal[][] = [];
 
-  itemToDeleteId: string = '';
-
-  //TODO: There must be a better way to make goalTypes available to the template
   public goalTypes = goalTypes;
   public statusTypes = statusTypes;
 
-  constructor(private goalService: GoalService) {
+  constructor(private store: Store) {
 
-    goalService.goalItems.subscribe((items: GoalItem[]) => {
+      this.userData$.subscribe((userData: User) => {
 
-      if (!items) return;
+        if (!userData.goals) return;
 
-      console.log(items);
+        // TODO: the table is not updating when the data changes
 
-      // group by goalType, which creates the array of arrays to create multiple tables in the html template
-      goalTypes.forEach( (goalType, goalTypeIndex) => {
-        this.goalItems[goalTypeIndex] = items.filter((item: GoalItem) => item.goalType === goalType.goalTypeName);
-      });
+        // group by goalType, which creates the array of arrays to create multiple tables in the html template
+        goalTypes.forEach( (goalType, goalTypeIndex) => {
+          this.goalItems[goalTypeIndex] = userData.goals.filter((item: Goal) => item.goalType === goalType.goalTypeName);
+        });
 
     });
 
    }
 
   async onSaveItem(item: any) {
-
-    console.log(item);
 
     try {
 
@@ -58,15 +57,15 @@ export class GoalsComponent {
         throw new Error("Item must have an id to be updated.");
       }
 
-      const currentGoalItem: GoalItem | undefined = this.goalItems
-        .map(array => array.find((ii: GoalItem) => ii.id === item.itemId))
+      const currentGoalItem: Goal | undefined = this.goalItems
+        .map(array => array.find((ii: Goal) => ii.id === item.itemId))
         .find(item => item !== undefined);
 
       if (!currentGoalItem) {
         throw new Error("Item not found for id: " + item.itemId);
       }
 
-      const goalItem: GoalItem = {
+      const goalItem: Goal = {
         id: currentGoalItem.id,
         goalName: item.goalName || currentGoalItem.goalName,
         goalDate: item.goalDate || currentGoalItem.goalDate,
@@ -76,9 +75,8 @@ export class GoalsComponent {
         description: item.description || currentGoalItem.description
       };
 
-      console.log(goalItem);
-
-      await this.goalService.updateItem(goalItem.id, goalItem);
+      // await this.goalService.updateItem(goalItem.id, goalItem);
+      this.store.dispatch(new UserActions.UpdateGoal(goalItem));
 
     } catch (error) {
       console.error("Error saving item: ", error);
@@ -86,39 +84,19 @@ export class GoalsComponent {
 
   }
 
-  onDeleteItem(itemId: string) {
+  onDeleteItem(goal: Goal) {
 
     // TODO: prompt user to confirm delete
 
     try {
 
-      this.goalService.deleteItem(itemId);
+      this.store.dispatch(new UserActions.RemoveGoal(goal));
 
     } catch (error) {
       console.error("Error deleting item: ", error);
     }
 
   }
-
-
-  // onDeleteItem(itemId: string) {
-  //   // Trigger the modal
-  //   $('#confirmModal').modal('show');
-
-  //   // Store the item ID in a property for deletion
-  //   this.itemToDeleteId = itemId;
-  // }
-
-  // onDeleteConfirmed() {
-  //   try {
-  //     this.goalService.deleteItem(this.itemToDeleteId);
-  //   } catch (error) {
-  //     console.error("Error deleting item: ", error);
-  //   }
-
-  //   // Close the modal after deletion
-  //   $('#confirmModal').modal('hide');
-  // }
 
 
 }

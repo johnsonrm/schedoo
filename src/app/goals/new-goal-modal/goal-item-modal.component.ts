@@ -1,20 +1,22 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngxs/store';
 import { NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, NgForm } from '@angular/forms';
-import { GoalItem, GoalType, goalTypes, statusTypes } from '../../models/goal.model'; //model for goals
-import { GoalService } from 'src/app/services/goal.service';  //service for goals
+import { Goal, GoalType, goalTypes, statusTypes } from '../../models/goal.model'; //model for goals
+import { UserActions } from 'src/app/store/actions/user.action';
 
 @Component({
   selector: 'app-new-goal-modal',
-  // standalone: true,
-  // imports: [CommonModule, NgbDatepickerModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, NgbDatepickerModule, FormsModule],
   templateUrl: './goal-item-modal.component.html',
   styleUrls: ['../../app.component.css']
 })
 export class NewGoalModalComponent implements OnInit {
 
-  @Input() goalItem: GoalItem;
+  @Input() goalItem: Goal;
+
 
   goalName: string;
   goalType: string;
@@ -25,16 +27,14 @@ export class NewGoalModalComponent implements OnInit {
   private defaultDate: string = new Date().toLocaleDateString('en-CA');
   private selectedGoalTypeIndex: number = 0;
   private selectedStatusIndex: number = 0;
-
   private selectedGoalType: string = GoalType[this.selectedGoalTypeIndex];
 
-  //TODO: There must be a better way to make goalTypes available to the template
   public goalTypes = goalTypes;
   public statusTypes = statusTypes;
 
 	closeResult = '';
 
-	constructor(private modalService: NgbModal, private goalService: GoalService) {
+	constructor(private modalService: NgbModal, public store: Store) {
 
   }
 
@@ -65,36 +65,26 @@ export class NewGoalModalComponent implements OnInit {
 
   save(form: NgForm) {
 
-    console.log(form.value);
+    const goalItem: Goal = {
+      id: null,
+      goalName: form.value.goalName,
+      goalDate: form.value.goalDate,
+      goalType: goalTypes[form.value.goalType].goalTypeName,
+      priority: form.value.priority,
+      status: form.value.status,
+      description: form.value.description
+    };
 
-    if (this.goalItem.id) {
+    if (this.goalItem?.id) {
 
-      //update existing item
-      this.goalService.updateItem(
-        this.goalItem.id,
-        { id: null, goalName: form.value.goalName,
-        goalType: goalTypes[form.value.goalType].goalTypeName,
-        priority: form.value.priority,
-        status: statusTypes[form.value.status],
-        goalDate: form.value.goalDate,
-        description: form.value.description }
-      );
+      goalItem.id = this.goalItem.id;
+      this.store.dispatch(new UserActions.UpdateGoal(goalItem));
 
     } else {
 
-      // else add a new item
-      this.goalService.addItem({
-        id: null,
-        goalName: form.value.goalName,
-        goalType: goalTypes[form.value.goalType].goalTypeName,
-        priority: form.value.priority,
-        status: statusTypes[form.value.status],
-        goalDate: form.value.goalDate,
-        description: form.value.description
-      });
+      this.store.dispatch(new UserActions.AddGoal(goalItem));
 
     }
-
 
     this.modalService.dismissAll();
 

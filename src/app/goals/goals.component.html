@@ -56,8 +56,8 @@
                 <td class="textCell">
                   <div class="inline">
                     <app-text-cell [itemId]="goalItem.id" [value]="goalItem.description" (save)="onSaveItem($event)" #description fieldName="description"></app-text-cell>
-                    <app-new-goal-modal [goalItem]="goalItem"></app-new-goal-modal>
-                    <button class="btn btn-link btn-sm linkButton" *ngIf="!description.editing" (click)="onDeleteItem(goalItem.id)">Delete</button>
+                    <app-new-goal-modal [goalItem]="goalItem" *ngIf="!description.editing"></app-new-goal-modal>
+                    <button class="btn btn-link btn-sm linkButton" *ngIf="!description.editing" (click)="onDeleteItem(goalItem)">Delete</button>
                   </div>
 
                 </td>
