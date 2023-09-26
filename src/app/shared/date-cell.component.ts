@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['../app.component.css'],
   template: `
     <ng-container *ngIf="!editing">
-      <div (click)="onEdit()" class='inline'>{{ value }}</div>
+      <div (click)="onEdit()" class='inline'>{{ text }}</div>
     </ng-container>
     <ng-container *ngIf="editing">
       <div class='inline'>
@@ -22,7 +22,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class DateCellComponent implements OnInit {
   @Input() fieldName: string;
-  @Input() value: string;
+  @Input() value: Date;
+  @Input() text: string;
   @Input() itemId: string;
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
@@ -31,7 +32,8 @@ export class DateCellComponent implements OnInit {
   private defaultDate: string = new Date().toLocaleDateString('en-CA');
 
   ngOnInit() {
-    this.defaultDate = this.value;
+    if (!this.value) return;
+    this.defaultDate = this.value.toLocaleDateString('en-CA');
   }
 
   onEdit() {
@@ -39,8 +41,11 @@ export class DateCellComponent implements OnInit {
   }
 
   onInputChange(value: string) {
-    this.value = value;
-  }
+    const localDate = new Date(value + 'T00:00:00');  // treat the date as local time, not UTC
+    this.value = localDate;
+    this.defaultDate = localDate.toLocaleDateString('en-CA');
+}
+
 
   onSave() {
     this.editing = false;

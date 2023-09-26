@@ -22,7 +22,7 @@ export class GoalDashboardComponent {
   private today: Date = new Date();
   year: number = this.today.getFullYear();
   month: number = this.today.getMonth();
-  monthName = this.today.toLocaleString('en-US', { month: 'long' });
+  monthName = this.today.toLocaleString('en-CA', { month: 'long' });
   goalTypes = goalTypes;
   goalItems: Goal[][] = [];
 

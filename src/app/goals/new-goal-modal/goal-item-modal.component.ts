@@ -17,7 +17,6 @@ export class NewGoalModalComponent implements OnInit {
 
   @Input() goalItem: Goal;
 
-
   goalName: string;
   goalType: string;
   priority: number;
@@ -40,15 +39,29 @@ export class NewGoalModalComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (!this.goalItem) return;
-
-    this.goalName = this.goalItem.goalName;
-    this.goalType = this.goalItem.goalType;
-    this.priority = this.goalItem.priority;
-    this.status = this.goalItem.status;
-    this.description = this.goalItem.description;
+    if (!this.goalItem) {
+      this.setDefaults();
+    } else {
+      this.goalName = this.goalItem.goalName;
+      this.goalType = this.goalItem.goalType;
+      this.defaultDate = this.goalItem.goalDate.toLocaleDateString('en-CA');
+      this.priority = this.goalItem.priority;
+      this.status = this.goalItem.status;
+      this.description = this.goalItem.description;
+    }
 
   }
+
+  private setDefaults() {
+
+      this.goalName = '';
+      this.goalType = null;
+      this.defaultDate = new Date().toLocaleDateString('en-CA');
+      this.priority = 0;
+      this.status = statusTypes[0];
+      this.description = "";
+
+    }
 
 	open(content) {
 
@@ -65,10 +78,12 @@ export class NewGoalModalComponent implements OnInit {
 
   save(form: NgForm) {
 
+    const localDate = new Date(form.value.goalDate + 'T00:00:00');  // treat the date as local time, not UTC
+
     const goalItem: Goal = {
       id: null,
       goalName: form.value.goalName,
-      goalDate: new Date(form.value.goalDate),
+      goalDate: localDate,
       goalType: goalTypes[form.value.goalType].goalTypeName,
       priority: form.value.priority,
       status: form.value.status,
@@ -85,6 +100,8 @@ export class NewGoalModalComponent implements OnInit {
       this.store.dispatch(new UserActions.AddGoal(goalItem));
 
     }
+
+    this.setDefaults();
 
     this.modalService.dismissAll();
 

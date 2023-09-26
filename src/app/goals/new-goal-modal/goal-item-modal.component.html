@@ -51,6 +51,6 @@
 	</div>
 </ng-template>
 
-<button class="btn btn-sm btn-outline-primary" (click)="open(content)" *ngIf="!goalItem">New</button>
-<button class="btn btn-link btn-sm linkButton" *ngIf="goalItem" (click)="open(content)">Edit</button>
+<button class="btn btn-sm btn-outline-primary" (click)="open(content)" *ngIf="!goalItem?.id">New</button>
+<button class="btn btn-link btn-sm linkButton" *ngIf="goalItem?.id" (click)="open(content)">Edit</button>
 
