@@ -68,7 +68,7 @@ export class NewGoalModalComponent implements OnInit {
     const goalItem: Goal = {
       id: null,
       goalName: form.value.goalName,
-      goalDate: form.value.goalDate,
+      goalDate: new Date(form.value.goalDate),
       goalType: goalTypes[form.value.goalType].goalTypeName,
       priority: form.value.priority,
       status: form.value.status,

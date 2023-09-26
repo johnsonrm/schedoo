@@ -1,5 +1,6 @@
 import { Goal } from './goal.model';
 import { DailyRoutine } from './daily.routine.model';
+import { Affirmation } from './affirmation.model';
 
 export interface User {
     uid: string;
@@ -10,6 +11,7 @@ export interface User {
     providerId: string;
     goals: Goal[];
     dailyRoutines: DailyRoutine[];
+    affirmations: Affirmation[];
 
 }
 

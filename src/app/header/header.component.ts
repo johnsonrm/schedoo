@@ -22,7 +22,6 @@ export class HeaderComponent {
 
     this.userData$.subscribe((userData: User) => {
       this.signedIn = userData?.uid ? true : false;
-      console.log("user signed in? " + this.signedIn);
     });
 
    }

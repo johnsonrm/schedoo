@@ -1,6 +1,7 @@
 import { Goal } from 'src/app/models/goal.model';
 import { User } from '../../models/user.model';
 import { DailyRoutine } from 'src/app/models/daily.routine.model';
+import { Affirmation } from 'src/app/models/affirmation.model';
 
 export namespace UserActions {
 
@@ -52,6 +53,27 @@ export namespace UserActions {
   export class RemoveDailyRoutine {
     static readonly type = '[User] Remove a daily routine';
     constructor(public payload: DailyRoutine) {
+    }
+
+  }
+
+  // Affirmation Actions
+  export class AddAffirmation {
+    static readonly type = '[User] Add an affirmation';
+    constructor(public payload: Affirmation) {
+
+    }
+  }
+
+  export class UpdateAffirmation {
+      static readonly type = '[User] Update an affirmation';
+      constructor(public payload: Affirmation) {
+      }
+    }
+
+  export class RemoveAffirmation {
+    static readonly type = '[User] Remove an affirmatin';
+    constructor(public payload: Affirmation) {
     }
 
   }
