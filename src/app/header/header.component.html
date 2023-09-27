@@ -1,32 +1,31 @@
 <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Schedoo</a>
+    <a class="navbar-brand" routerLink="#">Schedoo</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-      <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="signedIn"> -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="signedIn">
         <li class="nav-item">
-          <a class="nav-link" aria-current="daily routines" href="routine">Routine</a>
+          <a class="nav-link" aria-current="daily routines" routerLink="routine">Routine</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="goals for the year, month, and week" href="goals">Goals</a>
+          <a class="nav-link" aria-current="goals for the year, month, and week" routerLink="/goals">Goals</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="affirmations" href="affirmations">Affirmations</a>
+          <a class="nav-link" aria-current="affirmations" routerLink="affirmations">Affirmations</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="journal" href="journal">Journal</a>
+          <a class="nav-link" aria-current="journal" routerLink="journal">Journal</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="rules" href="rules">Rules</a>
+          <a class="nav-link" aria-current="rules" routerLink="rules">Rules</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="reading list" href="reading">Reading</a>
+          <a class="nav-link" aria-current="reading list" routerLink="reading">Reading</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="inspirational references" href="references">References</a>
+          <a class="nav-link" aria-current="inspirational references" routerLink="references">References</a>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto">
@@ -34,12 +33,12 @@
           <a class="nav-link" (click)=" signedIn ? signOut() : signIn()" [text]=" ((userData$ | async)?.email ? (userData$ | async)?.email + ' (Sign Out)' : 'Sign In' ) " ></a>
         </li>
         <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-theme="dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" data-bs-theme="dark" routerLink="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Manage
           </a>
           <ul class="dropdown-menu ms-auto">
-            <li><a class="dropdown-item" href="#">Schedule</a></li>
-            <li><a class="dropdown-item" href="#">Goals</a></li>
+            <li><a class="dropdown-item" routerLink="#">Schedule</a></li>
+            <li><a class="dropdown-item" routerLink="#">Goals</a></li>
           </ul>
         </li> -->
         </ul>

@@ -5,10 +5,11 @@ import { User } from "firebase/auth";
 import { Select } from '@ngxs/store';
 import { UserStateModel } from '../store/states/user.state';
 import { Observable } from 'rxjs';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrls: ['../app.component.css']
 })
