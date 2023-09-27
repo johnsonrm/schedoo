@@ -1,5 +1,26 @@
 <app-header></app-header>
 <div class="container">
   <router-outlet></router-outlet>
+  <!-- <router-outlet *ngIf="signedIn"></router-outlet> -->
+  <!-- <div *ngIf="!signedIn">
+    <h3>
+      Schedoo is a web site that helps manage and track self improvement efforts.  Please sign in to get started!
+    </h3>
+    <a class="btn btn-primary" (click)=" signedIn ? signOut() : signIn()" [text]=" ((userData$ | async)?.email ? (userData$ | async)?.email + ' (Sign Out)' : 'Sign In' ) " ></a>
+  </div> -->
+
+  <div class="px-4 py-5 my-5 text-center" *ngIf="!signedIn">
+    <div class="icon-container px-4 py-2 text-center">
+      <img class="d-block mx-auto mb-4 icon1" src="../assets/mono-schedule.svg" alt="" width="70" height="70">
+      <img class="d-block mx-auto mb-4 icon2" src="../assets/checkmark.svg" alt="" width="20" height="20">
+    </div>
+    <h1 class="display-5 fw-bold text-body-emphasis">Schedoo</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">Schedoo is a web site that helps manage and track self improvement efforts.  Please sign in to get started!</p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <button type="button" class="btn btn-outline-primary btn-lg px-4 gap-3" (click)="signIn()" >Sign in</button>
+      </div>
+    </div>
+  </div>
 </div>
 

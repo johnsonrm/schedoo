@@ -3,6 +3,32 @@
   color: rgb(177, 124, 9);
 }
 
+.navbar-brand {
+  color: white;
+}
+
+.navbar-brand:hover {
+  color: rgb(184, 153, 88);
+}
+
+.icon-container {
+  position: relative;
+}
+
+.icon1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.icon2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 table {
   background-color: rgb(24, 24, 24);
 }
