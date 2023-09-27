@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngxs/store';
 import { NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Goal, GoalType, goalTypes, statusTypes } from '../../models/goal.model'; //model for goals
+import { Goal, GoalType, goalTypes, statusTypes, StatusTypes } from '../../models/goal.model'; //model for goals
 import { UserActions } from 'src/app/store/actions/user.action';
 
 @Component({
@@ -27,6 +27,7 @@ export class NewGoalModalComponent implements OnInit {
   private selectedGoalTypeIndex: number = 0;
   private selectedStatusIndex: number = 0;
   private selectedGoalType: string = GoalType[this.selectedGoalTypeIndex];
+  private selectedStatus: string = StatusTypes[this.selectedStatusIndex];
 
   public goalTypes = goalTypes;
   public statusTypes = statusTypes;
@@ -55,7 +56,7 @@ export class NewGoalModalComponent implements OnInit {
   private setDefaults() {
 
       this.goalName = '';
-      this.goalType = null;
+      this.goalType = goalTypes[0].goalTypeName;
       this.defaultDate = new Date().toLocaleDateString('en-CA');
       this.priority = 0;
       this.status = statusTypes[0];
@@ -63,16 +64,23 @@ export class NewGoalModalComponent implements OnInit {
 
     }
 
-	open(content) {
+	open(content: any) {
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
 
   }
 
-  onSelectChange(value: any) {
+  onSelectChangeGoalType(value: any) {
 
     this.selectedGoalTypeIndex = value;
     this.selectedGoalType = GoalType[value];
+
+    }
+
+  onSelectChangeGoalStatus(value: any) {
+
+    this.selectedStatusIndex = value;
+    this.selectedStatus = StatusTypes[value];
 
     }
 
@@ -86,7 +94,7 @@ export class NewGoalModalComponent implements OnInit {
       goalDate: localDate,
       goalType: goalTypes[form.value.goalType].goalTypeName,
       priority: form.value.priority,
-      status: form.value.status,
+      status: statusTypes[form.value.status],
       description: form.value.description
     };
 

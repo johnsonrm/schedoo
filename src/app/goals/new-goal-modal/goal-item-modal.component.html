@@ -13,7 +13,7 @@
 
       <div class="mb-3">
         <label for="goalType" class="form-label text-light">Type of Goal:</label>
-        <select name="goalType" class="form-control" [(ngModel)]="selectedGoalTypeIndex" (ngModelChange)="onSelectChange($event)">
+        <select name="goalType" class="form-control" [(ngModel)]="selectedGoalTypeIndex" (ngModelChange)="onSelectChangeGoalType($event)">
           <option *ngFor="let goalType of goalTypes; let i = index" [ngValue]="i" [selected]=" i === 0">
             {{ goalType.goalTypeName }}
           </option>
@@ -22,7 +22,7 @@
 
       <div class="mb-3">
         <label for="status" class="form-label text-light">Status:</label>
-        <select name="status" class="form-control" [(ngModel)]="selectedStatusIndex" (ngModelChange)="onSelectChange($event)">
+        <select name="status" class="form-control" [(ngModel)]="selectedStatusIndex" (ngModelChange)="onSelectChangeGoalStatus($event)">
           <option *ngFor="let status of statusTypes; let i = index" [ngValue]="i" [selected]=" i === 0">
             {{ statusTypes[i] }}
           </option>
