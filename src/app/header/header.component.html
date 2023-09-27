@@ -1,5 +1,9 @@
 <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
   <div class="container-fluid">
+    <div class="icon-container px-4 py-2 text-center">
+      <img class="d-block mx-auto mb-4 icon1" src="../assets/mono-schedule.svg" alt="" width="20" height="20">
+      <img class="d-block mx-auto mb-4 icon2" src="../assets/checkmark.svg" alt="" width="7" height="7">
+    </div>
     <a class="navbar-brand" routerLink="#">Schedoo</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -30,7 +34,7 @@
       </ul>
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" (click)=" signedIn ? signOut() : signIn()" [text]=" ((userData$ | async)?.email ? (userData$ | async)?.email + ' (Sign Out)' : 'Sign In' ) " ></a>
+          <a class="nav-link" (click)=" signedIn ? signOut() : signIn()" [text]=" ((userData$ | async)?.email ? (userData$ | async)?.email + ' (Sign Out)' : 'Sign In (with Google)' ) " ></a>
         </li>
         <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-bs-theme="dark" routerLink="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
