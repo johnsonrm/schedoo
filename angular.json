@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "monthly": {
+    "schedoo": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/monthly",
+            "outputPath": "dist/schedoo",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -77,10 +77,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "monthly:build:production"
+              "browserTarget": "schedoo:build:production"
             },
             "development": {
-              "browserTarget": "monthly:build:development"
+              "browserTarget": "schedoo:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -88,7 +88,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "monthly:build"
+            "browserTarget": "schedoo:build"
           }
         },
         "test": {
@@ -113,7 +113,7 @@
           "builder": "@angular/fire:deploy",
           "options": {
             "version": 2,
-            "browserTarget": "monthly:build:production"
+            "browserTarget": "schedoo:build:production"
           }
         }
       }

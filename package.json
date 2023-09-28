@@ -1,5 +1,5 @@
 {
-  "name": "monthly",
+  "name": "schedoo",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -24,7 +24,6 @@
     "@ngxs/store": "^3.8.1",
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.3.1",
-    "firebase": "^10.3.1",
     "google-auth-library": "^9.0.0",
     "googleapis": "^126.0.1",
     "rxjs": "~7.8.0",
@@ -44,5 +43,9 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.1.3"
+  },
+  "resolutions": {
+    "firebase": "10.4.0"
   }
+
 }

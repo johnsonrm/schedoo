@@ -7,8 +7,12 @@
       "hosting": {
         "monthly": [
           "monthly-1"
+        ],
+        "schedoo": [
+          "schedoo"
         ]
       }
     }
-  }
+  },
+  "etags": {}
 }

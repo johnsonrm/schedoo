@@ -16,7 +16,7 @@ import { FirebaseService } from './services/firebase.service';
 })
 export class AppComponent {
 
-  title = 'monthly';
+  title = 'Schedoo';
 
   public signedIn: boolean = false;
 

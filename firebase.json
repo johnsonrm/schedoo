@@ -8,7 +8,8 @@
     ],
     "frameworksBackend": {
       "region": "us-east1"
-    }
+    },
+    "target": "schedoo"
   },
   "firestore": {
     "rules": "firestore.rules",
@@ -22,7 +23,7 @@
       "port": 8080
     },
     "hosting": {
-      "port": 5000
+      "port": 5001
     },
     "ui": {
       "enabled": true

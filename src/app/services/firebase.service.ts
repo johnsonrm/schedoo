@@ -18,7 +18,7 @@ export class FirebaseService {
   public usersCollection: CollectionReference = null;
   public userDocData: DocumentData = null;
 
-  constructor(private http: HttpClient, public firestore: Firestore, public store: Store) {
+  constructor(private http: HttpClient, public firestore: Firestore, public store: Store ) {
 
       // Initialize users collection and handle authentification state changes
 
