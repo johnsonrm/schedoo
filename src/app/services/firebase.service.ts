@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { provideAppCheck, initializeAppCheck, ReCaptchaEnterpriseProvider } from '@angular/fire/app-check';
 import { getAuth, signInWithPopup, GoogleAuthProvider, User } from '@angular/fire/auth';
 import { Firestore, collection, CollectionReference, doc, setDoc, getDoc, getDocs, DocumentData, DocumentReference, query  } from '@angular/fire/firestore';
 import { Store } from '@ngxs/store';

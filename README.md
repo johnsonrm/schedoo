@@ -1,53 +1,25 @@
-# Monthly
+# Schedoo
 
-A simple Angular based app to track and manage a daily routine schedule and goals for multiple timeframes, e.g. weekly, monthly, and annual.
+A simple Angular/Firebase based app to track and manage a daily routine schedule and goals for multiple timeframes, e.g. weekly, monthly, and annual. Additional future features will revolve around capabilities that guide and inspire the individual users to meet their goals.  This will include things like affirmations, inspirational references, reading lists, journaling, etc.
 
-## App Plan
+## Features
 
-### Features
-
-#### Feature: Daily Routine
+### Routine
 
 - A manageable schedule for a daily routine
 
-#### Feature: Annual Goals
+### Goals
 
-- Highest level goals for the overall calendar year
+- Goals for the year, month, and week.
 
-#### Feature: Monthly Goals
-
-- Summary level goals for by month
-
-#### Feature: Weekly Goals
-
-- Week by week goals.  These are more like tasks.
-
-#### Feature: Dashboard
+### Dashboard
 
 - A high level presentation of all currently relevant goals along with the daily and weekly routine.
 
-#### Models
+### Future Features
 
-- Daily Routine Schedule Item (time, duration, description)
-- Weekly Routine Schedule Item (day of week, description, status)
-- Annual Goal (date (year), description, status)
-- Monthly Goal (date (year and month), description, status)
-- Weekly Goal (date (Start date of week), description, status)
-
-### Services
-
-- Routine Schedule Service - generally handles data operations for routine schedules
-- Goal Service - generally handles data operations for goals
-
-### Components
-
-- Daily Routine
-- Weekly Routine
-- Annual Goals
-- Monthly Goals
-- Weekly Goals
-
-### TODO
-
-- Make the dashboard actionable, i.e. allow for quick edits like completely goals and routine items
-- Add affirmations, rules, and journaling
+- Affirmations
+- Journal
+- Reading
+- References
+- Rules
