@@ -20,6 +20,6 @@ A simple Angular/Firebase based app to track and manage a daily routine schedule
 
 - Affirmations
 - Journalling
-- Readinging list
+- Reading list
 - References
 - Rules
