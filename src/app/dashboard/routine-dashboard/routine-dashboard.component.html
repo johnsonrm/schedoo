@@ -2,16 +2,46 @@
   <div>
     <h3>Daily Routine</h3>
     <div>
-      <ul>
-        <li *ngFor="let dailyRoutineItem of dailyRoutines; let i = index;" >
-          <div>
-            <div>{{ dailyRoutineItem.time.hours.toString().padStart(2,'0') + ':' + dailyRoutineItem.time.minutes.toString().padStart(2,'0') }}</div>
-            <div>{{ dailyRoutineItem.time.hours.toString().padStart(2,'0') + ':' + (dailyRoutineItem.time.minutes + dailyRoutineItem.duration).toString().padStart(2,'0') }}</div>
-            <div>({{ dailyRoutineItem.duration }} min)</div>
-            <div>{{ dailyRoutineItem.description }}</div>
+
+        <div *ngIf="showPopup" [ngStyle]="popupStyles" class="popupStatus">
+
+          <div class="statusDescriptionLabel">{{ editingItem.description }}</div>
+
+            <svg class="statusIconSelect completedOntime" viewBox="0 0 16 16" (click)="onSave('ontime')" >
+              <use href="../../../assets/check-square-fill.svg#check-square-fill" />
+              <title>Completed on time today</title>
+            </svg>
+
+            <svg class="statusIconSelect completedLate" viewBox="0 0 16 16" (click)="onSave('late')">
+              <use href="../../../assets/check-square-fill.svg#check-square-fill" />
+              <title>Completed late or off schedule today</title>
+            </svg>
+
+            <svg class="statusIconSelect completedNot" viewBox="0 0 16 16" (click)="onSave('notcompleted')">
+              <use href="../../../assets/check-square-fill.svg#check-square-fill" />
+              <title>Not happening today</title>
+            </svg>
+
+            <svg class="statusIconSelect statusSelectCancel" viewBox="0 0 16 16" (click)="onSave('cancel')">
+              <use href="../../../assets/x-square-fill.svg#x-square-fill" />
+              <title>Cancel</title>
+            </svg>
+
+        </div>
+
+        <div *ngFor="let dailyRoutineItem of dailyRoutines; let i = index;" >
+          <div class="inline">
+            <div (click)="togglePopup(dailyRoutineItem, $event)">
+              <svg [attr.class]="getItemStatusClass(dailyRoutineItem.id)" viewBox="0 0 16 16">
+                <use [attr.href]="getItemStatusImageHref(dailyRoutineItem.id)" />
+              </svg>
+            </div>
+            <div class="startTime">{{ dailyRoutineItem.time.hours.toString().padStart(2,'0') + ':' + dailyRoutineItem.time.minutes.toString().padStart(2,'0') }}</div>
+            <div class="duration">({{ dailyRoutineItem.duration }} min)</div>
+            <div class="description">{{ dailyRoutineItem.description }}</div>
           </div>
-        </li>
-      </ul>
+        </div>
+
       </div>
   </div>
 </div>

@@ -49,12 +49,22 @@ export class DailyRoutineComponent {
         throw new Error("Item not found for id: " + item.itemId);
       }
 
-      const dailyRoutineItem: DailyRoutine = {
-        id: currentDailyRoutineItem.id,
-        time: (item.itemTime ? this.dailyRoutineService.convertStringToTime(item.itemTime) : currentDailyRoutineItem.time ),
-        duration: item.itemDuration || currentDailyRoutineItem.duration,
-        description: item.itemDescription || currentDailyRoutineItem.description
-      };
+      // const dailyRoutineItem: DailyRoutine = {
+      //   id: currentDailyRoutineItem.id,
+      //   time: (item.itemTime ? this.dailyRoutineService.convertStringToTime(item.itemTime) : currentDailyRoutineItem.time ),
+      //   duration: item.itemDuration || currentDailyRoutineItem.duration,
+      //   description: item.itemDescription || currentDailyRoutineItem.description,
+      //   dailyStatus: currentDailyRoutineItem.dailyStatus,
+      // };
+
+      // constructor(time: Time, duration: number, description: string, dailyStatus: RoutineStatus[], id?: string)
+
+      const dailyRoutineItem = new DailyRoutine(
+        (item.itemTime ? this.dailyRoutineService.convertStringToTime(item.itemTime) : currentDailyRoutineItem.time ),
+        item.itemDuration || currentDailyRoutineItem.duration,
+        item.itemDescription || currentDailyRoutineItem.description,
+        currentDailyRoutineItem.dailyStatus,
+        currentDailyRoutineItem.id)
 
       this.store.dispatch(new UserActions.UpdateDailyRoutine(dailyRoutineItem));
 

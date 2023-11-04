@@ -24,8 +24,11 @@
     "@ngxs/store": "^3.8.1",
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.3.1",
+    "bootstrap-icons": "^1.11.1",
+    "firebase": "^10.5.2",
     "google-auth-library": "^9.0.0",
     "googleapis": "^126.0.1",
+    "rxfire": "^6.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
@@ -47,5 +50,4 @@
   "resolutions": {
     "firebase": "10.4.0"
   }
-
 }

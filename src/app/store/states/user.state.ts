@@ -6,7 +6,7 @@ import { UserActions } from '../actions/user.action';
 import { Goal } from 'src/app/models/goal.model';
 import { Firestore, collection, getDoc, getDocs, doc, addDoc, query, updateDoc, deleteDoc, Timestamp } from '@angular/fire/firestore';
 import { CollectionReference, DocumentReference,  } from 'firebase/firestore';
-import { DailyRoutine } from 'src/app/models/daily.routine.model';
+import { DailyRoutine, RoutineStatus } from 'src/app/models/daily.routine.model';
 import { RoutineScheduleService } from 'src/app/services/routine-schedule.service';
 import { Affirmation } from 'src/app/models/affirmation.model';
 export interface UserStateModel {
@@ -60,7 +60,8 @@ export class UserState {
       this.getUserItems(ctx, 'goals');
 
       // add routines
-      this.getUserItems(ctx, 'dailyRoutines', this.sortDailyRoutineItems);
+      this.getUserItems(ctx, 'dailyRoutines', this.sortDailyRoutineItems, this.transformationDailyRoutineItems);
+
 
     }
 
@@ -139,6 +140,39 @@ export class UserState {
 
   }
 
+  @Action(UserActions.AddOrUpdateDailyRoutineStatus)
+  async AddOrUpdateDailyRoutineStatus(ctx: StateContext<UserStateModel>, action: UserActions.AddOrUpdateDailyRoutineStatus) {
+
+    // create a new status object (handles date formatting)
+    const newStatus: RoutineStatus = new RoutineStatus(action.status, new Date());
+
+    if (!action.dailyRoutine.dailyStatus) {
+      action.dailyRoutine.dailyStatus = [];
+      action.dailyRoutine.dailyStatus.push(newStatus);
+    } else {
+      const index = action.dailyRoutine.dailyStatus.findIndex( (status: RoutineStatus) => {
+        return Date.parse(status.date.toISOString()) === Date.parse(newStatus.date.toISOString());
+      });
+
+      if (index === -1) {
+        action.dailyRoutine.dailyStatus.push(newStatus);
+      } else {
+        action.dailyRoutine.dailyStatus[index] = newStatus;
+      }
+
+    }
+
+    try {
+      this.updateItem(ctx, 'dailyRoutines', action.dailyRoutine);
+    } catch(err) {
+      console.error("Error updating document: ", err);
+      throw err("Error updating daily routine entry", err);
+    }
+
+  }
+
+
+
   @Action(UserActions.RemoveDailyRoutine)
   async RemoveDailyRoutine(ctx: StateContext<UserStateModel>, action: UserActions.RemoveDailyRoutine) {
 
@@ -202,14 +236,15 @@ export class UserState {
 private async getUserItems<T extends CollectionName>(
   ctx: StateContext<UserStateModel>,
   collectionName: T,
-  sortFunction?: (items: CollectionTypeMap[T][]) => void
+  sortFunction?: (items: CollectionTypeMap[T][]) => void,
+  transformationFunction?: (items: CollectionTypeMap[T][]) => CollectionTypeMap[T][]
 ) {
   try {
       const itemsCollection = collection(this.userDocument, collectionName);
       const itemsQuery = query(itemsCollection);
       const querySnapshot = await getDocs(itemsQuery);
 
-      const items: CollectionTypeMap[T][] = querySnapshot.docs.map(doc => {
+      let items: CollectionTypeMap[T][] = querySnapshot.docs.map(doc => {
           const item = doc.data() as CollectionTypeMap[T];
           const updateItem: CollectionTypeMap[T] = {
               id: doc.id,
@@ -224,6 +259,10 @@ private async getUserItems<T extends CollectionName>(
           sortFunction(items);
       }
 
+      if (transformationFunction) {
+        items = transformationFunction(items);
+      }
+
       ctx.patchState({
           userData: {
               ...ctx.getState().userData,
@@ -231,13 +270,10 @@ private async getUserItems<T extends CollectionName>(
           }
       });
   } catch (error) {
-      console.error("Failed to get user items:", error);
+      console.error(`Failed to get user items for collection: ${collectionName}`, error);
       // Handle or throw error as needed
   }
 }
-
-
-
 
 private async addItem<T extends CollectionName>(
   ctx: StateContext<UserStateModel>,
@@ -246,17 +282,18 @@ private async addItem<T extends CollectionName>(
   sortFunction?: (items: CollectionTypeMap[T][]) => void
 ) {
   try {
+
     const currentState = ctx.getState().userData;
     const currentItems = [...(currentState[collectionName] as CollectionTypeMap[T][])];
 
-    if (this.userDocument && currentItems) {
+    if (this.userDocument) {
 
       // Convert dates to Timestamps for Firestore before adding
       const firestoreItem = this.convertDatesToTimestamps({ ...item });
       delete firestoreItem.id;
 
       const itemsCollection = collection(this.userDocument, collectionName);
-      const newItemDoc = await addDoc(itemsCollection, firestoreItem);
+      const newItemDoc = await addDoc(itemsCollection, this.convertCustomObjectToPlainObject(firestoreItem));
 
       const updatedItem = {
         ...item,
@@ -309,8 +346,11 @@ private async addItem<T extends CollectionName>(
     const itemDocRef = doc(itemsCollection, item.id);
     const docSnapshot = await getDoc(itemDocRef);
 
+    console.log(firestoreItem);
+    console.log(this.convertCustomObjectToPlainObject(firestoreItem));
+
     if (docSnapshot.exists()) {
-      await updateDoc(itemDocRef, firestoreItem);
+      await updateDoc(itemDocRef, this.convertCustomObjectToPlainObject(firestoreItem));
 
       // Document was updated successfully in Firestore, now update the state
       const itemIndex = currentItems.findIndex(updateItem => updateItem.id === item.id);
@@ -391,6 +431,46 @@ private async addItem<T extends CollectionName>(
     }
 
   }
+
+  private transformationDailyRoutineItems(dailyRoutineItems: DailyRoutine[]): DailyRoutine[] {
+
+    const newDailyRoutineItems = (dailyRoutineItems || []).map((dailyRoutineItem: any) => DailyRoutine.fromObject(dailyRoutineItem));
+
+    return (newDailyRoutineItems);
+
+  }
+
+
+  private convertCustomObjectToPlainObject(input: any): any {
+
+    if (Array.isArray(input)) {
+      // If it's an array, recursively convert each element
+      return input.map((item) => this.convertCustomObjectToPlainObject(item));
+    } else if (typeof input === 'object' && input !== null) {
+
+      if (input.toObject) {
+        return input.toObject();
+      } else {
+        // recursively convert its properties
+        const result: any = {};
+        for (const key in input) {
+          if (input.hasOwnProperty(key)) {
+            result[key] = this.convertCustomObjectToPlainObject(input[key]);
+          }
+        }
+        return result;
+
+      }
+
+    } else if (input instanceof Date) {
+      // If it's a date object, convert it to a ISO string representation
+      return input.toISOString();
+    } else {
+      // For other types (primitives), return as is
+      return input;
+    }
+  }
+
 
 
 }

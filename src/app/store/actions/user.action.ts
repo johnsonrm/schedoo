@@ -1,6 +1,6 @@
 import { Goal } from 'src/app/models/goal.model';
 import { User } from '../../models/user.model';
-import { DailyRoutine } from 'src/app/models/daily.routine.model';
+import { DailyRoutine, RoutineStatusOptions } from 'src/app/models/daily.routine.model';
 import { Affirmation } from 'src/app/models/affirmation.model';
 
 export namespace UserActions {
@@ -55,6 +55,12 @@ export namespace UserActions {
     constructor(public payload: DailyRoutine) {
     }
 
+  }
+
+  export class AddOrUpdateDailyRoutineStatus {
+    static readonly type = '[User] Add or Update a daily routine status';
+    constructor(public dailyRoutine: DailyRoutine, public status: RoutineStatusOptions) {
+    }
   }
 
   // Affirmation Actions

@@ -33,12 +33,7 @@ export class DailyRoutineModalComponent implements OnInit {
   }
 
   private setDefaults() {
-    this.dailyRoutineItem = {
-      id: null,
-      time: {hours: 6, minutes: 0},
-      duration: 15,
-      description: "",
-    }
+    this.dailyRoutineItem = new DailyRoutine({hours: 6, minutes: 0}, 15, "", [], null);
     this.dailyRoutineTime = this.setTimeString(this.dailyRoutineItem.time);
   }
 
@@ -58,12 +53,17 @@ export class DailyRoutineModalComponent implements OnInit {
     const duration: number = form.value.duration;
     const description: string = form.value.description;
 
-    const dailyRoutine: DailyRoutine = {
-      id: null,
-      time: time,
-      duration: duration,
-      description: description,
-    };
+    // const dailyRoutine: DailyRoutine = {
+    //   id: null,
+    //   time: time,
+    //   duration: duration,
+    //   description: description,
+    //   dailyStatus: [],
+    // };
+
+    // constructor(time: Time, duration: number, description: string, dailyStatus: RoutineStatus[], id?: string)
+
+    const dailyRoutine = new DailyRoutine(time, duration, description, [], null);
 
     try {
 
