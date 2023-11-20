@@ -57,8 +57,6 @@ export class DailyRoutineComponent {
       //   dailyStatus: currentDailyRoutineItem.dailyStatus,
       // };
 
-      // constructor(time: Time, duration: number, description: string, dailyStatus: RoutineStatus[], id?: string)
-
       const dailyRoutineItem = new DailyRoutine(
         (item.itemTime ? this.dailyRoutineService.convertStringToTime(item.itemTime) : currentDailyRoutineItem.time ),
         item.itemDuration || currentDailyRoutineItem.duration,
