@@ -15,12 +15,10 @@ export const goalTypes = [{
   }
 ] as const;
 
-// export const statusTypes = ['Incomplete', 'Completed ontime', 'Complete late', 'Completed early', 'Canceled'] as const;
-
 export enum StatusTypes {
   Incomplete = 'Incomplete',
   CompletedOntime = 'Completed ontime',
-  CompleteLate = 'Complete late',
+  CompletedLate = 'Completed late',
   CompletedEarly = 'Completed early',
   Canceled = 'Canceled'
 }
@@ -28,7 +26,7 @@ export enum StatusTypes {
 export const statusTypes = [
   StatusTypes.Incomplete,
   StatusTypes.CompletedOntime,
-  StatusTypes.CompleteLate,
+  StatusTypes.CompletedLate,
   StatusTypes.CompletedEarly,
   StatusTypes.Canceled
 ];

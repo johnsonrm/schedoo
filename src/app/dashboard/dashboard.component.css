@@ -1,5 +1,6 @@
 h3 {
   color: rgb(177, 124, 9);
+  margin-top: 1rem;
 }
 
 li {
@@ -9,3 +10,123 @@ li {
 hr {
   color: lightblue;
 }
+
+
+
+li div {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.inline * {
+  display: inline-block;
+}
+
+.statusButton {
+  width: 3rem;
+  padding: 0px;
+}
+
+.startTime{
+  width: 3rem;
+}
+
+.duration {
+  width: 5rem;
+}
+
+.description {
+  color: rgb(29, 90, 151);
+  /* color: rgb(177, 124, 9); */
+}
+
+.indicatorIcon {
+  width: 20px;
+  height: 20px;
+  /* fill: red; */
+  stroke:#333333;
+  margin: 0.2rem;
+}
+
+.statusIconSelect {
+  width: 32px;
+  height: 32px;
+  /* fill: green; */
+  stroke:#333333;
+  margin: 0.5rem;
+}
+
+.statusIconSelect:hover {
+  cursor: pointer;
+  filter: brightness(2);
+}
+
+.popupStatus {
+  background-color: #000000;
+  border: 1px solid #333333;
+  padding: 0.5rem;
+}
+
+#status :hover {
+  cursor: pointer;
+}
+
+
+.completedOntime {
+  fill: green;
+}
+.completedLate {
+  fill: yellow;
+}
+
+.completedNot {
+  fill: red;
+}
+.statusDescriptionLabel {
+  color: rgb(177, 124, 9);
+  margin: 0.2rem;
+}
+
+.statusSelectCancel {
+  color: white;
+}
+
+/* Style the tooltip text */
+svg title {
+  font-size: 14px;
+  color: #333;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+/* Style the tooltip container (the svg element) */
+svg:hover title {
+  display: block; /* Show the tooltip on hover */
+}
+
+.ontime, .completedontime {
+  fill: green;
+}
+
+.late, .completedlate {
+  fill: rgb(177, 124, 9);
+}
+
+.completedearly {
+  fill: lightgreen;
+}
+
+.notcompleted {
+  fill: red;
+}
+
+.goalDescription {
+  margin-left: 0.5rem;
+}
+
+.incomplete {
+  fill: red;
+}
+

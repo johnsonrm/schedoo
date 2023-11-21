@@ -1,14 +1,44 @@
 <div class="row">
+    <div *ngIf="showPopup" [ngStyle]="popupStyles" class="popupStatus">
+
+      <div class="statusDescriptionLabel">{{ editingItem.description }}</div>
+
+        <svg class="statusIconSelect completedOntime" viewBox="0 0 16 16" (click)="onSave(StatusTypes.CompletedOntime)" >
+          <use href="../../../assets/check-square-fill.svg#check-square-fill" />
+          <title>Completed on time</title>
+        </svg>
+
+        <svg class="statusIconSelect completedLate" viewBox="0 0 16 16" (click)="onSave(StatusTypes.CompletedEarly)">
+          <use href="../../../assets/check-square-fill.svg#check-square-fill" />
+          <title>Completed early</title>
+        </svg>
+
+        <svg class="statusIconSelect completedNot" viewBox="0 0 16 16" (click)="onSave(StatusTypes.CompletedLate)">
+          <use href="../../../assets/check-square-fill.svg#check-square-fill" />
+          <title>Completed late</title>
+        </svg>
+
+        <svg class="statusIconSelect statusSelectCancel" viewBox="0 0 16 16" (click)="onSave()">
+          <use href="../../../assets/x-square-fill.svg#x-square-fill" />
+          <title>Cancel</title>
+        </svg>
+
+    </div>
     <div>
       <ng-container *ngFor="let goalType of goalTypes; let i = index">
         <h3>{{ goalType.goalTypeName }} Goals for {{ (goalType.goalTypeName === 'Annual' ? year
                     : ( goalType.goalTypeName === 'Monthly' ? monthName : null ) ) }}</h3>
                 <hr />
-                <ul>
-                  <ng-container *ngFor="let goalItem of goalItems[i]">
-                    <li [innerText]="goalItem.goalName" [title]="goalItem.description"></li>
+                <ng-container *ngFor="let goalItem of goalItems[i]">
+                  <div class="inline">
+                    <div (click)="togglePopup(goalItem, $event)">
+                      <svg [attr.class]="getItemStatusClass(goalItem.id)" viewBox="0 0 16 16">
+                        <use [attr.href]="getItemStatusImageHref(goalItem.id)" />
+                      </svg>
+                    </div>
+                      <div class="goalDescription" [innerText]="goalItem.goalName" [title]="goalItem.description"></div>
+                    </div>
                   </ng-container>
-                </ul>
       </ng-container>
   </div>
 </div>
