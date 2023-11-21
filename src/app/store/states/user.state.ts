@@ -9,6 +9,7 @@ import { CollectionReference, DocumentReference,  } from 'firebase/firestore';
 import { DailyRoutine, RoutineStatus } from 'src/app/models/daily.routine.model';
 import { RoutineScheduleService } from 'src/app/services/routine-schedule.service';
 import { Affirmation } from 'src/app/models/affirmation.model';
+import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 export interface UserStateModel {
   userData: User;
 }
@@ -347,9 +348,6 @@ private async addItem<T extends CollectionName>(
     const itemDocRef = doc(itemsCollection, item.id);
     const docSnapshot = await getDoc(itemDocRef);
 
-    console.log(firestoreItem);
-    console.log(this.convertCustomObjectToPlainObject(firestoreItem));
-
     if (docSnapshot.exists()) {
       await updateDoc(itemDocRef, this.convertCustomObjectToPlainObject(firestoreItem));
 
@@ -418,7 +416,13 @@ private async addItem<T extends CollectionName>(
 
   private convertTimestampsToDates(obj: any): any {
     return Object.entries(obj).reduce((acc, [key, value]) => {
-      acc[key] = value instanceof Timestamp ? value.toDate() : value;
+      if (value instanceof Timestamp){
+        acc[key] = value.toDate();
+      } else if (value && typeof value === 'object' && 'seconds' in value) {
+        acc[key] = new Date( Number(value['seconds']) * 1000);
+      } else {
+        acc[key] = value;
+      }
       return acc;
     }, {});
   }

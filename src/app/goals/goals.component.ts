@@ -37,6 +37,8 @@ export class GoalsComponent {
 
         if (!userData.goals) return;
 
+        console.log(userData.goals);
+
         // TODO: the table is not updating when the data changes
 
         // group by goalType, which creates the array of arrays to create multiple tables in the html template
@@ -96,6 +98,13 @@ export class GoalsComponent {
       console.error("Error deleting item: ", error);
     }
 
+  }
+
+
+  isDate(dateString: string): boolean {
+    if (!dateString) return false;
+    const timestamp = Date.parse(dateString);
+    return !isNaN(timestamp);
   }
 
 

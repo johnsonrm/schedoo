@@ -45,7 +45,9 @@
                   <app-text-cell [itemId]="goalItem.id" [value]="goalItem.goalName" (save)="onSaveItem($event)" fieldName="goalName" ></app-text-cell>
                 </td>
                 <td class="goalDateField">
-                  <app-date-cell [itemId]="goalItem.id" [text]="goalItem.goalDate | date:goalType.dateFormat" [value]="goalItem.goalDate" (save)="onSaveItem($event)" fieldName="goalDate" ></app-date-cell>
+                  <ng-container *ngIf="isDate(goalItem.goalDate)">
+                    <app-date-cell [itemId]="goalItem.id" [text]="goalItem.goalDate | date:goalType.dateFormat" [value]="goalItem.goalDate" (save)="onSaveItem($event)" fieldName="goalDate" ></app-date-cell>
+                  </ng-container>
                 </td>
                 <td class="priorityField">
                   <app-number-cell [itemId]="goalItem.id" [value]="goalItem.priority" (save)="onSaveItem($event)" fieldName="priority" ></app-number-cell>

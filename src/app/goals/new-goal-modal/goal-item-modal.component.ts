@@ -45,10 +45,19 @@ export class NewGoalModalComponent implements OnInit {
     } else {
       this.goalName = this.goalItem.goalName;
       this.goalType = this.goalItem.goalType;
-      this.defaultDate = this.goalItem.goalDate.toLocaleDateString('en-CA');
+      // this.defaultDate = this.goalItem.goalDate.toLocaleDateString('en-CA');
       this.priority = this.goalItem.priority;
       this.status = this.goalItem.status;
       this.description = this.goalItem.description;
+
+      if (this.isValidDate(this.goalItem.goalDate)) {
+        this.defaultDate = this.goalItem.goalDate.toLocaleDateString('en-CA');
+      } else {
+        // Handle the invalid date case
+        // For example, you might want to set a default value or throw an error
+        this.defaultDate = 'Invalid date'; // or any other fallback logic
+      }
+
     }
 
   }
@@ -88,15 +97,24 @@ export class NewGoalModalComponent implements OnInit {
 
     const localDate = new Date(form.value.goalDate + 'T00:00:00');  // treat the date as local time, not UTC
 
-    const goalItem: Goal = {
-      id: null,
-      goalName: form.value.goalName,
-      goalDate: localDate,
-      goalType: goalTypes[form.value.goalType].goalTypeName,
-      priority: form.value.priority,
-      status: statusTypes[form.value.status],
-      description: form.value.description
-    };
+    const goalItem = new Goal(
+      form.value.goalName,
+      localDate,
+      goalTypes[form.value.goalType].goalTypeName,
+      statusTypes[form.value.status],
+      form.value.priority,
+      form.value.description
+    );
+
+    // const goalItem: Goal = {
+    //   id: null,
+    //   goalName: form.value.goalName,
+    //   goalDate: localDate,
+    //   goalType: goalTypes[form.value.goalType].goalTypeName,
+    //   priority: form.value.priority,
+    //   status: statusTypes[form.value.status],
+    //   description: form.value.description
+    // };
 
     if (this.goalItem?.id) {
 
@@ -114,5 +132,10 @@ export class NewGoalModalComponent implements OnInit {
     this.modalService.dismissAll();
 
   }
+
+  isValidDate(date: any): boolean {
+    return date instanceof Date && !isNaN(date.getTime());
+  }
+
 
 }

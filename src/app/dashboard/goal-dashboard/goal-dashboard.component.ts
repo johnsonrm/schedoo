@@ -28,13 +28,16 @@ export class GoalDashboardComponent {
 
   goalAttrs: { [id: string]: {
     status: string,
-    imageName: string
+    imageName: string,
+    goalTheCurrentWeek: boolean
   }} = {};
 
   private today: Date = new Date();
   year: number = this.today.getFullYear();
   month: number = this.today.getMonth();
   monthName = this.today.toLocaleString('en-CA', { month: 'long' });
+  firstDayOfWeek: string = this.getFirstDayOfWeek(this.today);
+
   goalTypes = goalTypes;
   goalItems: Goal[][] = [];
 
@@ -45,11 +48,19 @@ export class GoalDashboardComponent {
       if (!userData.goals) return;
 
       goalTypes.forEach( (goalType, goalTypeIndex) => {
-        this.goalItems[goalTypeIndex] = userData.goals.filter((item: Goal) => item.goalType === goalType.goalTypeName);
-        this.goalItems[goalTypeIndex]?.forEach((item: Goal) => {
+
+        this.goalItems[goalType.goalTypeName] = userData.goals.filter((item: Goal) => item.goalType === goalType.goalTypeName);
+
+        this.goalItems[goalType.goalTypeName]?.forEach((item: Goal) => {
+
+          const goalThisWeek = this.getFirstDayOfWeek(new Date(item.goalDate)) === this.firstDayOfWeek;
+
           this.goalAttrs[item.id] = {
             status: item.status,
-            imageName: ( item.status === StatusTypes.Incomplete || undefined ? 'square' : 'check-square-fill' )};
+            imageName: ( item.status === StatusTypes.Incomplete || undefined ? 'square' : 'check-square-fill' ),
+            goalTheCurrentWeek: goalThisWeek
+          };
+
         });
 
       });
@@ -61,6 +72,7 @@ export class GoalDashboardComponent {
   togglePopup(goal: Goal, event: MouseEvent) {
 
     this.editingItem = goal;
+    console.log(this.editingItem);
 
     this.showPopup = !this.showPopup;
     if (this.showPopup) {
@@ -75,7 +87,7 @@ export class GoalDashboardComponent {
 
   onSave(status: StatusTypes = StatusTypes.Incomplete) {
 
-    console.log(status);
+    console.log(this.editingItem);
 
     if (status !== StatusTypes.Incomplete && this.editingItem) {
       this.editingItem.status = status;
@@ -102,6 +114,19 @@ export class GoalDashboardComponent {
     status = status.replace(/\s/g, '');
 
     return "indicatorIcon " + status;
+
+  }
+
+  getFirstDayOfWeek(basedOnDate: Date): string {
+
+    return new Date(
+        basedOnDate.getFullYear(),
+        basedOnDate.getMonth(),
+        basedOnDate.getDate() - (basedOnDate.getDay() || 7) + 1
+      ).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long'
+      });
 
   }
 
