@@ -115,7 +115,8 @@ svg:hover title {
 }
 
 .completedearly {
-  fill: lightgreen;
+  fill: green;
+  stroke: lightgreen;
 }
 
 .notcompleted {

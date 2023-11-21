@@ -3,17 +3,17 @@
 
       <div class="statusDescriptionLabel">{{ editingItem.description }}</div>
 
-        <svg class="statusIconSelect completedOntime" viewBox="0 0 16 16" (click)="onSave(StatusTypes.CompletedOntime)" >
+        <svg class="statusIconSelect completedontime" viewBox="0 0 16 16" (click)="onSave(StatusTypes.CompletedOntime)" >
           <use href="../../../assets/check-square-fill.svg#check-square-fill" />
           <title>Completed on time</title>
         </svg>
 
-        <svg class="statusIconSelect completedLate" viewBox="0 0 16 16" (click)="onSave(StatusTypes.CompletedEarly)">
+        <svg class="statusIconSelect completedearly" viewBox="0 0 16 16" (click)="onSave(StatusTypes.CompletedEarly)">
           <use href="../../../assets/check-square-fill.svg#check-square-fill" />
           <title>Completed early</title>
         </svg>
 
-        <svg class="statusIconSelect completedNot" viewBox="0 0 16 16" (click)="onSave(StatusTypes.CompletedLate)">
+        <svg class="statusIconSelect completedlate" viewBox="0 0 16 16" (click)="onSave(StatusTypes.CompletedLate)">
           <use href="../../../assets/check-square-fill.svg#check-square-fill" />
           <title>Completed late</title>
         </svg>
