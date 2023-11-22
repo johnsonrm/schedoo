@@ -69,8 +69,12 @@ export class DailyRoutine
 
   // Retrieve the RoutineStatus for today
   public getRoutineStatusForToday(): RoutineStatus | undefined {
+
     const today = new Date();
-    const todayDateString = today.toISOString().split('T')[0]; // Get today's date as a string in yyyy-mm-dd format
+    const timeZoneOffset = today.getTimezoneOffset() * 60000; // convert from minutes to milliseconds
+    const localDate = new Date(today.getTime() - timeZoneOffset);
+
+    const todayDateString = localDate.toISOString().split('T')[0]; // Get today's date as a string in yyyy-mm-dd format
 
     return this.dailyStatus.find((status) => {
       const statusDateString = status.date.toISOString().split('T')[0];

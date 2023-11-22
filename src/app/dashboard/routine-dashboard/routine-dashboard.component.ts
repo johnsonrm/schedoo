@@ -67,6 +67,9 @@ export class RoutineDashboardComponent {
 
   onSave(status: string ) {
 
+    console.log('onSave: ', status);
+    console.log(this.editingItem);
+
     if (status !== "cancel" && this.editingItem) {
       this.store.dispatch(new UserActions.AddOrUpdateDailyRoutineStatus(this.editingItem, status as RoutineStatusOptions));
     }
