@@ -55,12 +55,6 @@ export class GoalDashboardComponent {
     title: 'Completed on time'
   },
   {
-    class: 'statusIconSelect completedearly',
-    type: StatusTypes.CompletedEarly,
-    iconHref: '../../../assets/check-square-fill.svg#check-square-fill',
-    title: 'Completed early'
-  },
-  {
     class: 'statusIconSelect completedlate',
     type: StatusTypes.CompletedLate,
     iconHref: '../../../assets/check-square-fill.svg#check-square-fill',

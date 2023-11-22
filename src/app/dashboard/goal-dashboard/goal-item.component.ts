@@ -50,16 +50,16 @@ export class GoalItemComponent {
     title: 'Completed on time'
   },
   {
-    class: 'statusIconSelect completedearly',
-    type: StatusTypes.CompletedEarly,
-    iconHref: '../../../assets/check-square-fill.svg#check-square-fill',
-    title: 'Completed early'
-  },
-  {
     class: 'statusIconSelect completedlate',
     type: StatusTypes.CompletedLate,
     iconHref: '../../../assets/check-square-fill.svg#check-square-fill',
     title: 'Completed late'
+  },
+  {
+    class: 'statusIconSelect incomplete',
+    type: StatusTypes.Incomplete,
+    iconHref: '../../../assets/square.svg#square',
+    title: 'Incomplete'
   },
   {
     class: 'statusIconSelect statusSelectCancel',
@@ -88,9 +88,9 @@ export class GoalItemComponent {
 
   }
 
-  onSave(status: StatusTypes = StatusTypes.Incomplete) {
+  onSave(status: StatusTypes) {
 
-    if (status !== StatusTypes.Incomplete && this.goal) {
+    if (status && this.goal) {
       this.goal.status = status;
       this.store.dispatch(new UserActions.UpdateGoal(this.goal));
     }

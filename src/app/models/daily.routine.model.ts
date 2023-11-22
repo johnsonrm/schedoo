@@ -1,6 +1,6 @@
 import { Time } from '@angular/common';
 
-export type RoutineStatusOptions = 'ontime' | 'late' | 'notcompleted';
+export type RoutineStatusOptions = 'ontime' | 'late' | 'notcompleted' | 'incomplete';
 export class RoutineStatus {
   public status: RoutineStatusOptions;
   private _date: Date;

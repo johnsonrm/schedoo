@@ -93,7 +93,6 @@ export class UserState {
   async UpdateGoal(ctx: StateContext<UserStateModel>, action: UserActions.UpdateGoal) {
 
     try {
-      console.log(action.payload);
       this.updateItem(ctx, 'goals', action.payload);
     } catch(err) {
       console.error("Error updating a goal: ", err);

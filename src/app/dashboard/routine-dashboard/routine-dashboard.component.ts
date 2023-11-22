@@ -8,7 +8,6 @@ import { UserActions } from 'src/app/store/actions/user.action';
 import { UserStateModel } from 'src/app/store/states/user.state';
 import { User } from 'src/app/models/user.model';
 import { Observable } from 'rxjs';
-import { isDefined } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 @Component({
   selector: 'app-routine-dashboard',
@@ -43,7 +42,11 @@ export class RoutineDashboardComponent {
         if (item.dailyStatus?.length !== 0) {
           const itemStatus = item.getRoutineStatusForToday()?.status;
           if (itemStatus) {
-            this.dailyRoutineAttrs[item.id] = { status: itemStatus, imageName: ( itemStatus === 'notcompleted' || undefined ? 'x-square-fill' : 'check-square-fill' )};
+            // this.dailyRoutineAttrs[item.id] = { status: itemStatus, imageName: ( itemStatus === 'notcompleted' || undefined ? 'x-square-fill' : 'check-square-fill' )};
+            this.dailyRoutineAttrs[item.id] = { status: itemStatus,
+                                                imageName: ( itemStatus === 'incomplete' || itemStatus === undefined ? 'square'
+                                                  : ( itemStatus === 'notcompleted' ? 'x-square-fill'
+                                                    : 'check-square-fill' ))};
           }
         }
       });
@@ -66,9 +69,6 @@ export class RoutineDashboardComponent {
   }
 
   onSave(status: string ) {
-
-    console.log('onSave: ', status);
-    console.log(this.editingItem);
 
     if (status !== "cancel" && this.editingItem) {
       this.store.dispatch(new UserActions.AddOrUpdateDailyRoutineStatus(this.editingItem, status as RoutineStatusOptions));
