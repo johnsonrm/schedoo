@@ -1,23 +1,78 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Goal, goalTypes, StatusTypes } from '../../models/goal.model';
-import { TextCellComponent } from 'src/app/shared/text-cell.component';
-import { DateCellComponent } from 'src/app/shared/date-cell.component';
 import { User } from '../../models/user.model';
 import { Select, Store } from '@ngxs/store';
 import { UserActions } from 'src/app/store/actions/user.action';
 import { UserStateModel } from '../../store/states/user.state';
 import { Observable } from 'rxjs';
+import { StatusIconComponent } from '../status-icon.component';
+import { GoalItemComponent } from './goal-item.component';
 @Component({
   selector: 'app-goal-dashboard',
   standalone: true,
-  imports: [CommonModule, TextCellComponent, DateCellComponent],
-  templateUrl: './goal-dashboard.component.html',
+  imports: [CommonModule, StatusIconComponent, GoalItemComponent],
+  template: `
+  <div class="row">
+    <div>
+      <h3>Goals for {{ year }}</h3>
+      <ng-container *ngFor="let goalItem of goalItems['Annual']; let i = index">
+        <goal-item [goal]="goalItem"
+          [status]="getItemStatusClass(goalItem.id)"
+          [imageName]="getItemStatusImageHref(goalItem.id)"
+          [goalTheCurrentWeek]="goalAttrs[goalItem.id].goalTheCurrentWeek">
+        </goal-item>
+      </ng-container>
+      <h3>Goals for {{ monthName }}</h3>
+      <ng-container *ngFor="let goalItem of goalItems['Monthly']; let i = index">
+        <goal-item [goal]="goalItem"
+          [status]="getItemStatusClass(goalItem.id)"
+          [imageName]="getItemStatusImageHref(goalItem.id)"
+          [goalTheCurrentWeek]="goalAttrs[goalItem.id].goalTheCurrentWeek">
+        </goal-item>
+      </ng-container>
+      <h3>Goals for Week of {{ firstDayOfWeek }}</h3>
+      <ng-container *ngFor="let goalItem of goalItems['Weekly']; let i = index">
+        <goal-item [goal]="goalItem"
+          [status]="getItemStatusClass(goalItem.id)"
+          [imageName]="getItemStatusImageHref(goalItem.id)"
+          [goalTheCurrentWeek]="goalAttrs[goalItem.id].goalTheCurrentWeek">
+        </goal-item>
+      </ng-container>
+  </div>
+</div>
+  `,
   styleUrls: ['../dashboard.component.css']
 })
 export class GoalDashboardComponent {
 
   @Select((state: {user: UserStateModel}) => state.user.userData) userData$ : Observable<User>;
+
+  public statuses = [{
+    class: 'statusIconSelect completedontime',
+    type: StatusTypes.CompletedOntime,
+    iconHref: '../../../assets/check-square-fill.svg#check-square-fill',
+    title: 'Completed on time'
+  },
+  {
+    class: 'statusIconSelect completedearly',
+    type: StatusTypes.CompletedEarly,
+    iconHref: '../../../assets/check-square-fill.svg#check-square-fill',
+    title: 'Completed early'
+  },
+  {
+    class: 'statusIconSelect completedlate',
+    type: StatusTypes.CompletedLate,
+    iconHref: '../../../assets/check-square-fill.svg#check-square-fill',
+    title: 'Completed late'
+  },
+  {
+    class: 'statusIconSelect statusSelectCancel',
+    type: null,
+    iconHref: '../../../assets/x-square-fill.svg#x-square-fill',
+    title: 'Cancel'
+  }
+]
 
   public StatusTypes = StatusTypes;
 
@@ -69,21 +124,7 @@ export class GoalDashboardComponent {
 
   }
 
-  togglePopup(goal: Goal, event: MouseEvent) {
 
-    this.editingItem = goal;
-    console.log(this.editingItem);
-
-    this.showPopup = !this.showPopup;
-    if (this.showPopup) {
-      this.popupStyles = {
-        position: 'fixed',
-        left: event.clientX + 'px',
-        top: event.clientY + 'px',
-      };
-    }
-
-  }
 
   onSave(status: StatusTypes = StatusTypes.Incomplete) {
 
@@ -98,6 +139,20 @@ export class GoalDashboardComponent {
     this.showPopup = false;
 
   }
+
+  getFirstDayOfWeek(basedOnDate: Date): string {
+
+    return new Date(
+        basedOnDate.getFullYear(),
+        basedOnDate.getMonth(),
+        basedOnDate.getDate() - (basedOnDate.getDay() || 7) + 1
+      ).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long'
+      });
+
+  }
+
 
   getItemStatusImageHref(goalId: string): string {
 
@@ -114,19 +169,6 @@ export class GoalDashboardComponent {
     status = status.replace(/\s/g, '');
 
     return "indicatorIcon " + status;
-
-  }
-
-  getFirstDayOfWeek(basedOnDate: Date): string {
-
-    return new Date(
-        basedOnDate.getFullYear(),
-        basedOnDate.getMonth(),
-        basedOnDate.getDate() - (basedOnDate.getDay() || 7) + 1
-      ).toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long'
-      });
 
   }
 

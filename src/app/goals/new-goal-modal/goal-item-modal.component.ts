@@ -23,6 +23,8 @@ export class NewGoalModalComponent implements OnInit {
   status: string;
   description: string;
 
+
+
   private defaultDate: string = new Date().toLocaleDateString('en-CA');
   private selectedGoalTypeIndex: number = 0;
   private selectedStatusIndex: number = 0;
