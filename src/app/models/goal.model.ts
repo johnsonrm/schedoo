@@ -19,6 +19,7 @@ export enum StatusTypes {
   Incomplete = 'Incomplete',
   CompletedOntime = 'Completed ontime',
   CompletedLate = 'Completed late',
+  Failed = 'Failed',
   Canceled = 'Canceled'
 }
 
@@ -26,6 +27,7 @@ export const statusTypes = [
   StatusTypes.Incomplete,
   StatusTypes.CompletedOntime,
   StatusTypes.CompletedLate,
+  StatusTypes.Failed,
   StatusTypes.Canceled
 ];
 

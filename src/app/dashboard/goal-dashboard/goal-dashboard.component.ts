@@ -106,7 +106,9 @@ export class GoalDashboardComponent {
 
           this.goalAttrs[item.id] = {
             status: item.status,
-            imageName: ( item.status === StatusTypes.Incomplete || undefined ? 'square' : 'check-square-fill' ),
+            imageName: ( item.status === StatusTypes.Incomplete || undefined
+                          ? 'square'
+                          : (item.status === StatusTypes.Failed ? 'x-square-fill' : 'check-square-fill' )),
             goalTheCurrentWeek: goalThisWeek
           };
 

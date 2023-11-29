@@ -62,6 +62,12 @@ export class GoalItemComponent {
     title: 'Completed late'
   },
   {
+    class: 'statusIconSelect completedNot',
+    type: StatusTypes.Failed,
+    iconHref: '../../../assets/x-square-fill.svg#x-square-fill',
+    title: 'Failed'
+  },
+  {
     class: 'statusIconSelect incomplete',
     type: StatusTypes.Incomplete,
     iconHref: '../../../assets/square.svg#square',

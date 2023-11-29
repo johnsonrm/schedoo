@@ -79,7 +79,7 @@ li div {
   fill: yellow;
 }
 
-.completedNot {
+.completedNot, .failed {
   fill: red;
 }
 .statusDescriptionLabel {
