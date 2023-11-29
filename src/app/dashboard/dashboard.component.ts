@@ -6,7 +6,17 @@ import { GoalDashboardComponent } from './goal-dashboard/goal-dashboard.componen
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, RoutineDashboardComponent, GoalDashboardComponent],
-  templateUrl: './dashboard.component.html',
+  // templateUrl: './dashboard.component.html',
+  template: `
+  <div class="row mt-5">
+    <div class="col-md-7">
+      <app-routine-dashboard></app-routine-dashboard>
+    </div>
+    <div class="col-md-5">
+      <app-goal-dashboard></app-goal-dashboard>
+    </div>
+  </div>
+  `,
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {

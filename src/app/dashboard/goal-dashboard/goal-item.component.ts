@@ -5,12 +5,13 @@ import { UserActions } from 'src/app/store/actions/user.action';
 import { Store } from '@ngxs/store';
 import { StatusIconComponent } from '../status-icon.component';
 import { CommonModule } from '@angular/common';
+import { NewGoalModalComponent } from '../../goals/new-goal-modal/goal-item-modal.component';
 
 @Component({
   selector: 'goal-item',
   standalone: true,
-  styleUrls: ['../../dashboard/dashboard.component.css'],
-  imports: [CommonModule, StatusIconComponent],
+  styleUrls: ['../../dashboard/dashboard.component.css', '../../../app/app.component.css'],
+  imports: [CommonModule, StatusIconComponent, NewGoalModalComponent],
   template: `
     <div *ngIf="showPopup" [ngStyle]="popupStyles" class="popupStatus">
       <div class="statusDescriptionLabel">{{ goal.goalName }}</div>
@@ -23,13 +24,18 @@ import { CommonModule } from '@angular/common';
           (save)="onSave($event)">
         </status-icon>
     </div>
-    <div class="inline">
-      <div (click)="togglePopup(goal, $event)">
+    <div class="temp">
+      <div class="inline" (click)="togglePopup(goal, $event)">
         <svg [attr.class]="status" viewBox="0 0 16 16">
           <use [attr.href]="imageName" />
         </svg>
       </div>
-      <div class="goalDescription" [innerText]="goal.goalName" [title]="goal.description"></div>
+      <div class="inline">
+        <!-- <app-text-cell [itemId]="goalItem.id" [value]="goalItem.description" (save)="onSaveItem($event)" #description fieldName="description"></app-text-cell> -->
+        <div class="inline goalDescription" [innerText]="goal.goalName" [title]="goal.description"></div>
+        <app-new-goal-modal [goalItem]="goal" ></app-new-goal-modal>
+        <button class="btn btn-link btn-sm linkButton" (click)="onDeleteItem(goal)">Delete</button>
+      </div>
     </div>
   `
 })
@@ -96,6 +102,20 @@ export class GoalItemComponent {
     }
 
     this.showPopup = false;
+
+  }
+
+  onDeleteItem(goal: Goal) {
+
+    // TODO: prompt user to confirm delete
+
+    try {
+
+      this.store.dispatch(new UserActions.RemoveGoal(goal));
+
+    } catch (error) {
+      console.error("Error deleting item: ", error);
+    }
 
   }
 
